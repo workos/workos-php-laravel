@@ -29,7 +29,8 @@
     "autoload-dev": {
         "psr-4": {
             "WORKOS\\Laravel\\": [
-                "tests/"
+                "tests/",
+                "tests/WorkOS"
             ]
         }
     },
@@ -39,5 +40,10 @@
                 "WorkOS\\Laravel\\WorkOSServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "clean": "rm -rf composer.lock vendor/",
+        "format": "php vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no .",
+        "test": "php vendor/bin/phpunit tests"
     }
 }
