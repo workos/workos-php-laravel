@@ -15,11 +15,22 @@
         "workos/workos-php": "0.0.1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15"
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpunit/phpunit": "^5.7"
+    },
+    "suggest": {
+        "laravel/framework": "For testing"
     },
     "autoload": {
         "psr-4": {
             "WorkOS\\Laravel\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WORKOS\\Laravel\\": [
+                "tests/"
+            ]
         }
     },
     "extra": {
