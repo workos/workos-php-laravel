@@ -1,7 +1,7 @@
 {
     "name": "workos/workos-php-laravel",
     "description": "WorkOS PHP Library for Laravel",
-    "keywords": ["laravel", "laravel 5", "laravel 6", "laravel 7", "workos", "sdk", "sso", "audit trail"],
+    "keywords": ["laravel", "laravel 5", "laravel 6", "laravel 7", "workos", "sdk", "sso"],
     "license": "MIT",
     "authors": [
         {
