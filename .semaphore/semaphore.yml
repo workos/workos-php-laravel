@@ -1,0 +1,41 @@
+version: v1.0
+name: workos-php-laravel
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+auto_cancel:
+  running:
+    when: "branch != 'master'"
+fail_fast:
+  cancel:
+    when: "branch != 'master'"
+blocks:
+  - name: Format Check
+    dependencies: []
+    task:
+      jobs:
+        - name: php-cs-fixer
+          commands:
+            - checkout
+            - bash bin/restore-cache-and-update-deps 7
+            - composer run-script format-check
+  - name: Tests
+    dependencies: []
+    task:
+      prologue:
+        commands:
+          - checkout
+      jobs:
+        - name: Laravel 5-ish
+          commands:
+            - bash bin/restore-cache-and-update-deps 5
+            - composer run-script test
+        - name: Laravel 6-ish
+          commands:
+            - bash bin/restore-cache-and-update-deps 6
+            - composer run-script test
+        - name: Laravel 7-ish
+          commands:
+            - bash bin/restore-cache-and-update-deps 7
+            - composer run-script test

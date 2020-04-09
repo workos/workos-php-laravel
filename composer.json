@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "illuminate/support": "^5.1 || ^6.0 || ^7.0",
+        "illuminate/support": "^5.0 || ^6.0 || ^7.0",
         "workos/workos-php": "0.0.1"
     },
     "require-dev": {
@@ -43,7 +43,8 @@
     },
     "scripts": {
         "clean": "rm -rf composer.lock vendor/",
-        "format": "php vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no .",
+        "format": "php vendor/bin/php-cs-fixer fix -v --using-cache=no .",
+        "format-check": "php vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no .",
         "test": "php vendor/bin/phpunit tests"
     }
 }
