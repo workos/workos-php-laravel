@@ -1,0 +1,36 @@
+#!/bin/bash
+
+KEY="composer-laravel-${1}-$(checksum composer.json)"
+
+echo "Get that cache"
+cache restore $KEY
+
+echo -n "Setting desired Laravel version to "
+case ${1} in
+  "5")
+    echo "5...ish"
+    laravel_version="^5.8"
+    ;;
+
+  "6")
+    echo "6...ish"
+    laravel_version="^6.18"
+    ;;
+
+  "7")
+    echo "7...ish"
+    laravel_version="^7.5"
+    ;;
+
+  *)
+    printf "\nError: Specify either 5, 6 or 7 for Laravel version\n"
+    exit 1
+    ;;
+esac
+
+echo "Install desired Laravel version then update everything"
+composer require laravel/framework=${laravel_version}
+composer u
+
+echo "Attempt to store cache in case of an initial miss"
+cache store $KEY ./vendor

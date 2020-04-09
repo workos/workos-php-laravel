@@ -7,7 +7,7 @@ use Illuminate\Foundation\Application;
 
 /**
  * Class LaravelTestCase.
- * 
+ *
  * Chock full of Laravel specific helper functions.
  */
 class LaravelTestCase extends \PHPUnit\Framework\TestCase
