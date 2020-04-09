@@ -31,5 +31,9 @@ class WorkOSServiceProvider extends ServiceProvider
         $config = $this->app["config"]->get("workos");
         \WorkOS\WorkOS::setApiKey($config["api_key"]);
         \WorkOS\WorkOS::setProjectId($config["project_id"]);
+
+        if ($config["api_base_url"]) {
+            \WorkOS\WorkOS::setApiBaseUrl($config["api_base_url"]);
+        }
     }
 }

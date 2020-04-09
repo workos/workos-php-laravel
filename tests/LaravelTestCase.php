@@ -19,7 +19,7 @@ class LaravelTestCase extends \PHPUnit\Framework\TestCase
     {
         $app = new Application();
         $app->setBasePath(sys_get_temp_dir());
-        $app->instance('config', new Repository());
+        $app->instance("config", new Repository());
 
         return $app;
     }
