@@ -1,50 +1,50 @@
-{
-    "name": "workos/workos-php-laravel",
-    "description": "WorkOS PHP Library for Laravel",
-    "keywords": ["laravel", "laravel 5", "laravel 6", "laravel 7", "workos", "sdk", "sso"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "WorkOS",
-            "email": "eng@workos.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.6.0",
-        "illuminate/support": "^5.0 || ^6.0 || ^7.0",
-        "workos/workos-php": "0.0.1"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15",
-        "phpunit/phpunit": "^5.7"
-    },
-    "suggest": {
-        "laravel/framework": "For testing"
-    },
-    "autoload": {
-        "psr-4": {
-            "WorkOS\\Laravel\\": "lib/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "WORKOS\\Laravel\\": [
-                "tests/",
-                "tests/WorkOS"
-            ]
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "WorkOS\\Laravel\\WorkOSServiceProvider"
-            ]
-        }
-    },
-    "scripts": {
-        "clean": "rm -rf composer.lock vendor/",
-        "format": "php vendor/bin/php-cs-fixer fix -v --using-cache=no .",
-        "format-check": "php vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no .",
-        "test": "php vendor/bin/phpunit tests"
+ {
+  "name": "workos/workos-php-laravel",
+  "description": "WorkOS PHP Library for Laravel",
+  "keywords": ["laravel", "laravel 5", "laravel 6", "laravel 7", "workos", "sdk", "sso"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "WorkOS",
+      "email": "support@workos.com"
     }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "illuminate/support": "^5.0 || ^6.0 || ^7.0",
+    "workos/workos-php": "0.0.1"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.15",
+    "phpunit/phpunit": "^5.7"
+  },
+  "suggest": {
+    "laravel/framework": "For testing"
+  },
+  "autoload": {
+    "psr-4": {
+      "WorkOS\\Laravel\\": "lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WORKOS\\Laravel\\": [
+        "tests/",
+        "tests/WorkOS"
+      ]
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "WorkOS\\Laravel\\WorkOSServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf composer.lock vendor/",
+    "format": "php vendor/bin/php-cs-fixer fix -v --using-cache=no .",
+    "format-check": "php vendor/bin/php-cs-fixer fix -v --dry-run --using-cache=no .",
+    "test": "php vendor/bin/phpunit tests"
+  }
 }
