@@ -5,5 +5,5 @@ namespace WorkOS\Laravel;
 final class Version
 {
     const SDK_IDENTIFIER = "WorkOS PHP Laravel";
-    const SDK_VERSION = '0.3.0';
+    const SDK_VERSION = '0.3.1';
 }
