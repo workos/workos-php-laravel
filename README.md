@@ -34,7 +34,7 @@ php artisan vendor:publish --provider="WorkOS\Laravel\WorkOSServiceProvider"
 ```
 
 The package will need to be configured with your [api key](https://dashboard.workos.com/api-keys) and [project id](https://dashboard.workos.com/sso/configuration).
-By default, the package will look for a `WORKOS_API_KEY` and `WORKOS_PROJECT_ID` environment variable.
+By default, the package will look for a `WORKOS_API_KEY` and `WORKOS_CLIENT_ID` environment variable.
 
 ## More Information
 
