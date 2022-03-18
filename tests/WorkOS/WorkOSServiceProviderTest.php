@@ -10,7 +10,7 @@ class WorkOSServiceProviderTest extends LaravelTestCase
     {
         $this->app = $this->setupApplication();
     }
-    
+
     public function testRegisterWorkOSServiceProviderYieldsExpectedConfig()
     {
         $this->app["config"]->set("workos.api_key", "pk_secretsauce");
