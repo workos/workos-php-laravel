@@ -31,7 +31,6 @@ class WorkOSServiceProvider extends ServiceProvider
         $config = $this->app["config"]->get("workos");
         \WorkOS\WorkOS::setApiKey($config["api_key"]);
         \WorkOS\WorkOS::setClientId($config["client_id"]);
-
         \WorkOS\WorkOS::setIdentifier(\WorkOS\Laravel\Version::SDK_IDENTIFIER);
         \WorkOS\WorkOS::setVersion(\WorkOS\Laravel\Version::SDK_VERSION);
 
