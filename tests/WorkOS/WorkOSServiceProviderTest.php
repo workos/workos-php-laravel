@@ -6,7 +6,7 @@ class WorkOSServiceProviderTest extends LaravelTestCase
 {
     protected $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = $this->setupApplication();
     }
