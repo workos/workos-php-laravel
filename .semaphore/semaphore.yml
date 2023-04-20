@@ -46,6 +46,8 @@ blocks:
         - name: Laravel 9-ish
           commands:
             - bash bin/restore-cache-and-update-deps 9
+            - composer dump-autoload
+            - composer install --no-scripts
             - composer update
             - composer run-script test
         - name: Laravel 10-ish
