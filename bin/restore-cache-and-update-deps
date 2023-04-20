@@ -21,9 +21,24 @@ case ${1} in
     echo "7...ish"
     laravel_version="^7.5"
     ;;
+  
+  "8")
+    echo "8...ish"
+    laravel_version="^8.83"
+    ;;
+  
+  "9")
+    echo "9...ish"
+    laravel_version="^9.52"
+    ;;
+  
+  "10")
+    echo "10...ish"
+    laravel_version="^10.8"
+    ;;
 
   *)
-    printf "\nError: Specify either 5, 6 or 7 for Laravel version\n"
+    printf "\nError: Specify either 5, 6, 7, 8, 9, or 10 for Laravel version\n"
     exit 1
     ;;
 esac
