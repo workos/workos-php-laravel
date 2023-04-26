@@ -23,7 +23,7 @@ case ${1} in
     ;;
 
   *)
-    printf "\nError: Specify either 5, 6 or 7 for Laravel version\n"
+    printf "\nError: Specify either 5, 6, or 7 for Laravel version\n"
     exit 1
     ;;
 esac
@@ -34,3 +34,4 @@ composer u
 
 echo "Attempt to store cache in case of an initial miss"
 cache store $KEY ./vendor
+
