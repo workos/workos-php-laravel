@@ -54,8 +54,8 @@ case ${1} in
 esac
 
 echo "Install desired Laravel version then update everything"
-composer require laravel/framework=${laravel_version}
-composer u
+# composer require laravel/framework=${laravel_version}
+# composer u
 
 echo "Attempt to store cache in case of an initial miss"
 cache store $KEY ./vendor
