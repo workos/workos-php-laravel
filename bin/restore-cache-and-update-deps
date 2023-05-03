@@ -30,6 +30,9 @@ case ${1} in
   "9")
     echo "9"
     laravel_version="^9.52.7"
+    echo "install composer"
+    php composer-setup.php --install-dir=bin --filename=composer
+    mv composer.phar /usr/local/bin/composer
     ;;
   
   # "10")
