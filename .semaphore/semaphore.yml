@@ -45,9 +45,9 @@ blocks:
             - composer run-script test
         - name: Laravel 9
           commands:
-            - bash bin/restore-cache-and-update-deps 8
+            - bash bin/restore-cache-and-update-deps 9
             - composer run-script test
         - name: Laravel 10
           commands:
-            - bash bin/restore-cache-and-update-deps 8
+            - bash bin/restore-cache-and-update-deps 10
             - composer run-script test
