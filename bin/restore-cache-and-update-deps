@@ -26,6 +26,11 @@ case ${1} in
     echo "8"
     laravel_version="^8.76.2"
     ;;
+    
+  "9")
+    echo "9"
+    laravel_version="^9.52.7"
+    ;;
 
   *)
     printf "\nError: Specify either 5, 6, or 7 for Laravel version\n"
