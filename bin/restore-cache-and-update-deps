@@ -31,8 +31,16 @@ case ${1} in
     echo "9"
     laravel_version="^9.52.7"
     echo "install composer"
-    php composer-setup.php --install-dir=bin --filename=composer
-    mv composer.phar /usr/local/bin/composer
+    if [[ ! `command -v composer 2>/dev/null` ]]
+    then
+      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      php composer-setup.php
+      php -r "unlink('composer-setup.php');"
+
+      php composer.phar u
+    else
+      composer u
+    fi
     ;;
   
   # "10")
