@@ -57,7 +57,7 @@ case ${1} in
 
     "10")
     echo "10"
-    laravel_version="^10.9.0"
+    laravel_version="^10.0.0"
     echo "install composer"
     if [[ ! `command -v composer 2>/dev/null` ]]
     then
