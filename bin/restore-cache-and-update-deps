@@ -35,7 +35,7 @@ case ${1} in
     echo "8"
     laravel_version="^8.76.2"
     echo "Install desired Laravel version then update everything"
-    #composer require laravel/framework=${laravel_version}
+    composer require laravel/framework=${laravel_version}
     composer u
     ;;
     
