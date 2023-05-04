@@ -10,27 +10,72 @@ case ${1} in
   "5")
     echo "5...ish"
     laravel_version="^5.8"
+    echo "Install desired Laravel version then update everything"
+    composer require laravel/framework=${laravel_version}
+    composer u
     ;;
 
   "6")
     echo "6...ish"
     laravel_version="^6.18"
+    echo "Install desired Laravel version then update everything"
+    composer require laravel/framework=${laravel_version}
+    composer u
     ;;
 
   "7")
     echo "7...ish"
     laravel_version="^7.5"
+    echo "Install desired Laravel version then update everything"
+    composer require laravel/framework=${laravel_version}
+    composer u
+    ;;
+  
+  "8")
+    echo "8"
+    laravel_version="^8.76.2"
+    echo "Install desired Laravel version then update everything"
+    composer require laravel/framework=${laravel_version}
+    composer u
+    ;;
+    
+  "9")
+    echo "9"
+    laravel_version="^9.52.7"
+    echo "install composer"
+    if [[ ! `command -v composer 2>/dev/null` ]]
+    then
+      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      php composer-setup.php
+      php -r "unlink('composer-setup.php');"
+      php composer.phar require laravel/framework=${laravel_version}
+      php composer.phar update --no-scripts
+    else
+      composer u
+    fi
     ;;
 
+    "10")
+    echo "10"
+    laravel_version="^10.0.0"
+    echo "install composer"
+    if [[ ! `command -v composer 2>/dev/null` ]]
+    then
+      php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      php composer-setup.php
+      php -r "unlink('composer-setup.php');"
+      php composer.phar require laravel/framework=${laravel_version}
+      php composer.phar update --no-scripts
+    else
+      composer u
+    fi
+      ;;
+
   *)
-    printf "\nError: Specify either 5, 6, or 7 for Laravel version\n"
+    printf "\nError: Specify either 5, 6, 7, 8, 9, or 10 for Laravel version\n"
     exit 1
     ;;
 esac
-
-echo "Install desired Laravel version then update everything"
-composer require laravel/framework=${laravel_version}
-composer u
 
 echo "Attempt to store cache in case of an initial miss"
 cache store $KEY ./vendor
