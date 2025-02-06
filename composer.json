@@ -1,4 +1,5 @@
 {
+  "$schema": "https://getcomposer.org/schema.json",
   "name": "workos/workos-php-laravel",
   "description": "WorkOS PHP Library for Laravel",
   "keywords": [

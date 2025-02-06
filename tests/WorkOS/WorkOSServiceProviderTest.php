@@ -20,6 +20,6 @@ class WorkOSServiceProviderTest extends LaravelTestCase
 
         $this->assertEquals("pk_secretsauce", \WorkOS\WorkOS::getApiKey());
         $this->assertEquals("client_pizza", \WorkOS\WorkOS::getClientId());
-        $this->assertEquals("https://workos-hop.com/", \WorkOS\WorkOS::getApiBaseUrl());
+        $this->assertEquals("https://workos-hop.com/", \WorkOS\WorkOS::getApiBaseURL());
     }
 }
