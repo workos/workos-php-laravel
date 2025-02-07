@@ -27,6 +27,12 @@ trait HasWorkOSAuth
         $this->mergeCasts([
             'sso_data' => 'array',
         ]);
+
+		static::creating(function($model) {
+			if (!$model->password && $model->workos_id) {
+				$model->password = null;
+			}
+		});
 	}
 
 	public static function findByWorkOSId(string $workosId)
