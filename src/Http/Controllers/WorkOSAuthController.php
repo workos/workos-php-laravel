@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\WorkOS;
 
-use App\Http\Controllers\Controller; // FIXME: Do we know this is going to tbe the correct namespace?
-use App\Models\User; // FIXME: Do we know this is going to tbe the correct namespace?
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use WorkOS\Exception\WorkOSException;
 use WorkOS\UserManagement;
@@ -18,7 +17,7 @@ class WorkOSAuthController extends Controller
         $this->userManagement = new UserManagement();
     }
 
-    public function redirect(Request $request)
+    public function redirect()
     {
         try {
             $authorizationUrl = $this->userManagement->getAuthorizationUrl(
@@ -42,11 +41,13 @@ class WorkOSAuthController extends Controller
                 clientId: config('workos.client_id')
             );
 
+            $userModel = config('auth.providers.users.model');
+
             // Find or create user
-            $user = User::findByWorkOSId($auth->user->id);
+            $user = $userModel::findByWorkOSId($auth->user->id);
             $name = $auth->user->firstName . ' ' . $auth->user->lastName;
             if (!$user) {
-                $user = User::create([
+                $user = $userModel::create([
                     'name' => $name,
                     'email' => $auth->user->email,
                     'workos_id' => $auth->user->id,
