@@ -27,7 +27,10 @@ class InstallWorkOS extends Command
 		// install routes
 		$this->callSilent('vendor:publish', ['--tag' => 'workos-routes']);
 
-		$this->updateUserModel();
+		// install controllers
+		$this->callSilent('vendor:publish', ['--tag' => 'workos-controllers']);
+
+		/*$this->updateUserModel();*/
 
 
 		$this->updateEnvironmentFile();

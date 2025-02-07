@@ -4,6 +4,8 @@ namespace WorkOS\Laravel;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use WorkOS\Laravel\Auth\WorkOSGuard;
+use WorkOS\Laravel\Console\Commands\InstallWorkOS;
 
 /**
  * Class WorkOSServiceProvider.
@@ -33,6 +35,8 @@ class WorkOSServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+                $this->commands([InstallWorkOS::class]);
+
                 $this->publishes([
                     __DIR__."/../config/workos.php" => config_path("workos.php")
                 ], 'workos-config');
@@ -41,18 +45,21 @@ class WorkOSServiceProvider extends ServiceProvider
             if (! self::migrationFileExists($migrationFileName)) {
                 $this->publishes([
                     __DIR__ . "/../database/migrations/{$migrationFileName}.stub" => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
-                ], 'migrations');
+                ], 'workos-migrations');
             }
 
-                $this->publishes([
-                    __DIR__.'/../resources/views' => resource_path('views/vendor/workos')
-                ], 'workos-views');
+                /*$this->publishes([*/
+                /*    __DIR__.'/../resources/views' => resource_path('views/vendor/workos')*/
+                /*], 'workos-views');*/
+
                 $this->publishes([
                     __DIR__.'/../routes' => base_path('routes')
                 ], 'workos-routes');
+
                 $this->publishes([
-                    __DIR__.'/../app/Http/Controllers' => app_path('Http/Controllers/WorkOS')
+                    __DIR__.'/Http/Controllers' => app_path('Http/Controllers/WorkOS')
                 ], 'workos-controllers');
+
                 /*$this->publishes([*/
                 /*    __DIR__.'/../app/Models' => app_path('Models')*/
                 /*], 'workos-models');*/

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\WorkOSAuthController;
+use App\Http\Controllers\WorkOS\WorkOSAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {

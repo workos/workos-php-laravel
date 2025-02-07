@@ -35,7 +35,7 @@
   },
   "autoload": {
     "psr-4": {
-      "WorkOS\\Laravel\\": ["src/", "src/Console/Commands"]
+      "WorkOS\\Laravel\\": "src/"
     }
   },
   "autoload-dev": {
