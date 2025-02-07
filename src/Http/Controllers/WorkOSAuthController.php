@@ -20,13 +20,10 @@ class WorkOSAuthController extends Controller
 
     public function redirect(Request $request)
     {
-        $organzationId = $request->input('organization_id');
-        /*dd($organzationId);*/
-
         try {
             $authorizationUrl = $this->userManagement->getAuthorizationUrl(
                 redirectUri: config('workos.redirect_uri'),
-                organizationId: $organzationId
+                provider: config('workos.default_provider')
             );
 
             return redirect($authorizationUrl);
@@ -47,21 +44,22 @@ class WorkOSAuthController extends Controller
 
             // Find or create user
             $user = User::findByWorkOSId($auth->user->id);
+            $name = $auth->user->firstName . ' ' . $auth->user->lastName;
             if (!$user) {
                 $user = User::create([
-                    'name' => trim($auth->user->firstName . ' ' . $auth->user->lastName),
+                    'name' => $name,
                     'email' => $auth->user->email,
                     'workos_id' => $auth->user->id,
-                    'organization_id' => $auth->organization?->id,
+                    'organization' => $auth->organizationId,
                     'sso_data' => $auth->user->toArray(),
                 ]);
             }
 
             Auth::login($user);
 
-            return redirect('/dashboard');
+            return redirect(config('workos.redirect_after_login'));
         } catch (\Exception $e) {
-            return redirect()->route('login')->withErrors([
+            return redirect()->route('workos.login')->withErrors([
                 'workos' => 'Authentication failed: ' . $e->getMessage()
             ]);
         }
