@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\WorkOS;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Controllers\Controller; // FIXME: Do we know this is going to tbe the correct namespace?
+use App\Models\User; // FIXME: Do we know this is going to tbe the correct namespace?
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use WorkOS\Exception\WorkOSException;
@@ -20,15 +20,18 @@ class WorkOSAuthController extends Controller
 
     public function redirect(Request $request)
     {
+        $organzationId = $request->input('organization_id');
+        /*dd($organzationId);*/
+
         try {
             $authorizationUrl = $this->userManagement->getAuthorizationUrl(
                 redirectUri: config('workos.redirect_uri'),
-                organizationId: $request->get('organization_id')
+                organizationId: $organzationId
             );
 
             return redirect($authorizationUrl);
         } catch (WorkOSException $e) {
-            return redirect()->route('login')->withErrors([
+            return redirect()->route('workos.login')->withErrors([
                 'workos' => 'Authentication failed: ' . $e->getMessage()
             ]);
         }

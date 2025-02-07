@@ -3,6 +3,7 @@
 namespace WorkOS\Laravel;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use WorkOS\Laravel\Auth\WorkOSGuard;
 use WorkOS\Laravel\Console\Commands\InstallWorkOS;
@@ -48,25 +49,32 @@ class WorkOSServiceProvider extends ServiceProvider
                 ], 'workos-migrations');
             }
 
-                /*$this->publishes([*/
-                /*    __DIR__.'/../resources/views' => resource_path('views/vendor/workos')*/
-                /*], 'workos-views');*/
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/workos')
+            ], 'workos-views');
 
-                $this->publishes([
-                    __DIR__.'/../routes' => base_path('routes')
-                ], 'workos-routes');
+            $this->publishes([
+                __DIR__.'/../routes' => base_path('routes')
+            ], 'workos-routes');
 
-                $this->publishes([
-                    __DIR__.'/Http/Controllers' => app_path('Http/Controllers/WorkOS')
-                ], 'workos-controllers');
+            $this->publishes([
+                __DIR__.'/Http/Controllers' => app_path('Http/Controllers/WorkOS')
+            ], 'workos-controllers');
 
-                /*$this->publishes([*/
-                /*    __DIR__.'/../app/Models' => app_path('Models')*/
-                /*], 'workos-models');*/
+            /*$this->publishes([*/
+            /*    __DIR__.'/../app/Models' => app_path('Models')*/
+            /*], 'workos-models');*/
         }
 
         $this->loadRoutesFrom(__DIR__.'/../routes/workos.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'workos');
+
+        Route::middleware(config('workos.middleware', ['web']))->group(function() {
+            Route::get('/login/workos', function() {
+                return view('workos::login');
+            })->name('workos.login');
+        });
+
         Auth::extend('workos', function($app, $name, array $config) {
             return new WorkOSGuard(
                 $app->make(\WorkOS\WorkOS::class),
