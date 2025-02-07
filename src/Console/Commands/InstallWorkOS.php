@@ -22,7 +22,7 @@ class InstallWorkOS extends Command
 		$this->callSilent('vendor:publish', ['--tag' => 'workos-views']);
 
 		// install models
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-models']);
+		/*$this->callSilent('vendor:publish', ['--tag' => 'workos-models']);*/
 
 		// install routes
 		$this->callSilent('vendor:publish', ['--tag' => 'workos-routes']);

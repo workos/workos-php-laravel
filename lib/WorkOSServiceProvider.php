@@ -53,9 +53,9 @@ class WorkOSServiceProvider extends ServiceProvider
                 $this->publishes([
                     __DIR__.'/../app/Http/Controllers' => app_path('Http/Controllers/WorkOS')
                 ], 'workos-controllers');
-                $this->publishes([
-                    __DIR__.'/../app/Models' => app_path('Models')
-                ], 'workos-models');
+                /*$this->publishes([*/
+                /*    __DIR__.'/../app/Models' => app_path('Models')*/
+                /*], 'workos-models');*/
         }
 
         $this->loadRoutesFrom(__DIR__.'/../routes/workos.php');
