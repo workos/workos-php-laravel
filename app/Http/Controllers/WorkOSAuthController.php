@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use WorkOS\UserManagement;
@@ -17,53 +18,49 @@ class WorkOSAuthController extends Controller
 		$this->userManagement = new UserManagement();
 	}
 
-	public function redirect(Request $request)
-	{
-		$organizationId = "org_test_idp";
-try {
-		$authorizationUrl = $this->userManagement->getAuthorizationUrl(
-			redirectUri: config('workos.redirect_uri'),
-			organizationId: $request->input('organization_id'),
-			state: $this->generateState(),
-			// FIXME needs at least one of the following:
-			// - $provider = null,
-			// - $connectionId = null,
-			// - $organizationId = null,
-		);
+    public function redirect(Request $request)
+    {
+        try {
+            $authorizationUrl = $this->userManagement->getAuthorizationUrl(
+                redirectUri: config('workos.redirect_uri'),
+                organizationId: $request->input('organization_id')
+            );
 
-			$session->put('wos-session', $request->input('state'));
+            return redirect($authorizationUrl);
+        } catch (\Exception $e) {
+            return redirect()->route('login')->withErrors([
+                'workos' => 'Authentication failed: ' . $e->getMessage()
+            ]);
+        }
+    }
 
-		return redirect($authorizationUrl);
-		} catch (WorkOSException $e) {
-			return redirect()->route('login')->withErrors([
-				'workos' => 'Unable to initiate WorkOS authentication. Please try again later. '.$e.getMessage()
-			]);
-		}
-	}
+   public function callback(Request $request)
+    {
+        try {
+            $auth = $this->userManagement->authenticateWithCode(
+                code: $request->input('code'),
+                clientId: config('workos.client_id')
+            );
 
-	public function callback(Request $request)
-	{
-		$code = $request->input('code');
-        $clientId = config('workos.client_id');
-		$user = $this->userManagement->authenticateWithCode(code: $code, clientId: $clientId);
-		var_dump($user);
-		return redirect('/');
-	}
+            // Find or create user
+            $user = User::findByWorkOSId($auth->user->id);
+            if (!$user) {
+                $user = User::create([
+                    'name' => trim($auth->user->firstName . ' ' . $auth->user->lastName),
+                    'email' => $auth->user->email,
+                    'workos_id' => $auth->user->id,
+                    'organization_id' => $auth->organization?->id,
+                    'sso_data' => $auth->user->toArray(),
+                ]);
+            }
 
-	protected function createUser($auth)
-	{
-		return User::create([
-			'email' => $auth->email,
-			'name' => $auth->name,
-			'workos_id' => $auth->id,
-			'organization_id' => $auth->organization_id,
-			'sso_data' => $auth->sso_data,
-		])
-	}
+            Auth::login($user);
 
-	protected function generateState()
-	{
-		// FIXME: I don't think this is necessary
-		return bin2hex(random_bytes(32));
-	}
+            return redirect('/dashboard');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->withErrors([
+                'workos' => 'Authentication failed: ' . $e->getMessage()
+            ]);
+        }
+    }
 }
