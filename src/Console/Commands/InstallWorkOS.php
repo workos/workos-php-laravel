@@ -12,6 +12,22 @@ class InstallWorkOS extends Command
 
 	public function handle()
 	{
+		$this->publishFiles();
+
+		/*$this->updateUserModel();*/
+
+
+		$this->updateEnvironmentFile();
+
+		$this->info('WorkOS starter kit installed successfully! 🚀');
+		$this->info('Please add your WorkOS API key and Client ID to your .env file.');
+	}
+
+	protected function publishFiles()
+	{
+		// install provider
+		$this->callSilent('vendor:publish', ['--tag' => 'workos-provider']);
+
 		// publish migrations
 		$this->callSilent('vendor:publish', ['--tag' => 'workos-migrations']);
 
@@ -29,14 +45,6 @@ class InstallWorkOS extends Command
 
 		// install controllers
 		$this->callSilent('vendor:publish', ['--tag' => 'workos-controllers']);
-
-		/*$this->updateUserModel();*/
-
-
-		$this->updateEnvironmentFile();
-
-		$this->info('WorkOS starter kit installed successfully! 🚀');
-		$this->info('Please add your WorkOS API key and Client ID to your .env file.');
 	}
 
 	protected function updateUserModel()
@@ -55,5 +63,21 @@ class InstallWorkOS extends Command
 		if (!str_contains($env, 'WORKOS_API_KEY=')) {
 			file_put_contents(base_path('.env'), "\n\nWORKOS_API_KEY=\nWORKOS_CLIENT_ID=\n", FILE_APPEND);
 		}
+	}
+
+	protected function updateConfigApp()
+	{
+		$configPath = config_path('app.php');
+		$content = file_get_contents($configPath);
+
+        // Add the provider if it's not already there
+        if (!str_contains($content, 'App\\Providers\\WorkOSServiceProvider::class')) {
+            $content = str_replace(
+                "'providers' => ServiceProvider::defaultProviders()->merge([",
+                "'providers' => ServiceProvider::defaultProviders()->merge([\n        App\\Providers\\WorkOSServiceProvider::class,",
+                $content
+            );
+            file_put_contents($configPath, $content);
+        }
 	}
 }

@@ -46,13 +46,6 @@
       ]
     }
   },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "WorkOS\\Laravel\\WorkOSServiceProvider"
-      ]
-    }
-  },
   "scripts": {
     "clean": "rm -rf composer.lock vendor/",
     "format": "php vendor/bin/php-cs-fixer fix -v --using-cache=no .",

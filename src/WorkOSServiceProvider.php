@@ -61,19 +61,19 @@ class WorkOSServiceProvider extends ServiceProvider
                 __DIR__.'/Http/Controllers' => app_path('Http/Controllers/WorkOS')
             ], 'workos-controllers');
 
+            $this->publishes([
+                __DIR__.'/WorkOSServiceProvider.php' => app_path('Providers/WorkOSServiceProvider.php'),
+            ], 'workos-provider');
+
             /*$this->publishes([*/
             /*    __DIR__.'/../app/Models' => app_path('Models')*/
             /*], 'workos-models');*/
+        } else if (file_exists(base_path('routes/workos.php'))) {
+            $this->loadRoutesFrom(base_path('routes/workos.php'));
         }
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/workos.php');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'workos');
-
-        Route::middleware(config('workos.middleware', ['web']))->group(function() {
-            Route::get('/login/workos', function() {
-                return view('workos::login');
-            })->name('workos.login');
-        });
+        /*$this->loadRoutesFrom(base_path('routes'), 'workos');*/
+        $this->loadViewsFrom(resource_path(('views/vendor/workos')), 'workos');
 
         Auth::extend('workos', function($app, $name, array $config) {
             return new WorkOSGuard(
