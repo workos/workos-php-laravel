@@ -70,12 +70,16 @@ class WorkOSAuthController extends Controller
         try {
             $logoutUrl = $this->userManagement->getLogoutUrl(
                 sessionId: $request->session()->getId(),
+                return_to: route('login')
             );
-            Auth::logout();
-            $request->sesssion()->invalidate();
-            return redirect($logoutUrl);
+            Auth::guard('web')->logout();
+            // Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/');
         } catch (\Exception $e) {
-            return redirect()->route('workos.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'workos' => 'Logout failed: ' . $e->getMessage()
             ]);
         }

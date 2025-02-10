@@ -4,7 +4,7 @@ use App\Http\Controllers\WorkOS\WorkOSAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {
-	Route::get('/auth/workos/login', function() {
+	Route::get('/login', function() {
 		return view('workos::login');
 	})->name('login');
 
@@ -12,9 +12,9 @@ Route::middleware('web')->group(function () {
 
 	Route::get('/auth/workos/callback', [WorkOSAuthController::class, 'callback'])->name('workos.callback');
 
-	Route::get('/auth/workos/logout', [WorkOSAuthController::class, 'logout'])->name('workos.logout');
+	Route::get('/logout', [WorkOSAuthController::class, 'logout'])->name('workos.logout');
 
-	Route::get('/auth/workos/dashboard', function() {
+	Route::get('/dashboard', function() {
 		return 'You are logged in!';
 	})->name('workos.dashboard')->middleware(('auth'));
 });
