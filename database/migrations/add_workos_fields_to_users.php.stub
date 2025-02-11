@@ -13,19 +13,19 @@ return new class extends Migration
 			$table->string('password')->nullable()->change();
 		});
 
+    // then add the new fields
 		Schema::table('users', function (Blueprint $table) {
 			$table->string('workos_id')->nullable()->unique();
-			$table->string('organization_id')->nullable();
-			$table->json('sso_data')->nullable();
 		});
 	}
 
 	public function down()
 	{
 		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn((['workos_id', 'organization_id', 'sso_data']));
+			$table->dropColumn((['workos_id']));
 
-      $table->string('password')->nullable(false)->change();
+      // Note: Intentionally not reverting password nullable state
+      // as it could break existing null values
 		});
 	}
 };

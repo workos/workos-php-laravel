@@ -31,7 +31,7 @@ class InstallWorkOS extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'workos-provider']);
 
         // publish migrations
-        // $this->callSilent('vendor:publish', ['--tag' => 'workos-migrations']);
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-migrations']);
 
         // publish config
         // $this->callSilent('vendor:publish', ['--tag' => 'workos-config']);
@@ -40,7 +40,7 @@ class InstallWorkOS extends Command
         // $this->callSilent('vendor:publish', ['--tag' => 'workos-views']);
 
         // install models
-        /* $this->callSilent('vendor:publish', ['--tag' => 'workos-models']); */
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-models']);
 
         // install routes
         $this->callSilent('vendor:publish', ['--tag' => 'workos-routes']);
@@ -50,6 +50,21 @@ class InstallWorkOS extends Command
     }
 
     protected function updateUserModel()
+    {
+        $modelPath = app_path('Models/User.php');
+        $content = file_get_contents($modelPath);
+
+        if (! str_contains($content, "'workos_id'")) {
+            $content = preg_replace(
+                "/(protected\s+\$fillable\s*=\s*\[\s*(?:'|\")\w+(?:'|\")\s*,\s*(?:'|\")\w+(?:'|\")\s*,\s*(?:'|\")\w+(?:'|\")\s*)/",
+                "$1,\n        'workos_id'",
+                $content
+            );
+            file_put_contents($modelPath, $content);
+        }
+    }
+
+    protected function xupdateUserModel()
     {
         $filesystem = new Filesystem;
 

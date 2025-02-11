@@ -23,9 +23,9 @@ class Provider extends AbstractProvider
 
     protected $paramaters = [];
 
-    public function __construct($request, array $config)
+    public function __construct(...$args)
     {
-        parent::__construct($request, $config);
+        parent::__construct(...$args);
 
         $this->userManagement = new UserManagement;
     }
@@ -57,25 +57,30 @@ class Provider extends AbstractProvider
             throw new InvalidStateException;
         }
 
-        $response = $this->userManagement->authenticateWithCode($this->clientId, $this->getCode());
+        $response = $this->userManagement->authenticateWithCode(clientId: $this->clientId, code: $this->getCode());
 
         $this->rawResponse = $response;
 
-        $user = $this->mapUserToObject($response->toArray());
+        $user = $this->mapUserToObject($response->raw['user']);
 
         return $user;
     }
 
-    protected function getUserByToken($token) {}
+    protected function getUserByToken($token)
+    {
+        $res = $this->userManagement->authenticateWithCode(clientId: $this->clientId, code: $token);
+
+        return $res;
+    }
 
     protected function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
-            'id' => $user['user']['id'],
-            'nickname' => $user['user']['email'] ?? null,
-            'name' => trim(($user['user']['first_name'] ?? '').' '.($user['user']['last_name'] ?? '')),
-            'email' => $user['user']['email'] ?? null,
-            'avatar' => $user['user']['profile_picture_url'] ?? null,
+            'id' => $user['id'],
+            'nickname' => $user['email'] ?? null,
+            'name' => trim(($user['first_name'] ?? '').' '.($user['last_name'] ?? '')),
+            'email' => $user['email'] ?? null,
+            'avatar' => $user['profile_picture_url'] ?? null,
             'organization_id' => $user['organization_id'] ?? null,
         ]);
     }
@@ -83,6 +88,8 @@ class Provider extends AbstractProvider
     protected function getCodeFields($state = null)
     {
         $fields = parent::getCodeFields($state);
+
+        dd($fields);
 
         return array_merge($fields, $this->paramaters);
     }
