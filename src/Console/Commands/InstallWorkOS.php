@@ -7,71 +7,71 @@ use Illuminate\Filesystem\Filesystem;
 
 class InstallWorkOS extends Command
 {
-	protected $signature = 'workos:install';
-	protected $description = 'Install the WorkOS package';
+    protected $signature = 'workos:install';
 
-	public function handle()
-	{
-		$this->publishFiles();
+    protected $description = 'Install the WorkOS package';
 
-		/*$this->updateUserModel();*/
+    public function handle()
+    {
+        $this->publishFiles();
 
+        /* $this->updateUserModel(); */
 
-		$this->updateEnvironmentFile();
+        $this->updateEnvironmentFile();
 
-		$this->info('WorkOS starter kit installed successfully! 🚀');
-		$this->info('Please add your WorkOS API key and Client ID to your .env file.');
-	}
+        $this->info('WorkOS starter kit installed successfully! 🚀');
+        $this->info('Please add your WorkOS API key and Client ID to your .env file.');
+    }
 
-	protected function publishFiles()
-	{
-		// install provider
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-provider']);
+    protected function publishFiles()
+    {
+        // install provider
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-provider']);
 
-		// publish migrations
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-migrations']);
+        // publish migrations
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-migrations']);
 
-		// publish config
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-config']);
+        // publish config
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-config']);
 
-		// install views
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-views']);
+        // install views
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-views']);
 
-		// install models
-		/*$this->callSilent('vendor:publish', ['--tag' => 'workos-models']);*/
+        // install models
+        /* $this->callSilent('vendor:publish', ['--tag' => 'workos-models']); */
 
-		// install routes
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-routes']);
+        // install routes
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-routes']);
 
-		// install controllers
-		$this->callSilent('vendor:publish', ['--tag' => 'workos-controllers']);
-	}
+        // install controllers
+        $this->callSilent('vendor:publish', ['--tag' => 'workos-controllers']);
+    }
 
-	protected function updateUserModel()
-	{
-		$filesystem = new Filesystem();
+    protected function updateUserModel()
+    {
+        $filesystem = new Filesystem;
 
-		if ($filesystem->exists($model = app_path('Models/User.php'))) {
-			$filesystem->copy(__DIR__.'../../../subs/User.php', $model);
-		}
-	}
+        if ($filesystem->exists($model = app_path('Models/User.php'))) {
+            $filesystem->copy(__DIR__.'../../../subs/User.php', $model);
+        }
+    }
 
-	protected function updateEnvironmentFile()
-	{
-		$env = file_get_contents(base_path('.env'));
+    protected function updateEnvironmentFile()
+    {
+        $env = file_get_contents(base_path('.env'));
 
-		if (!str_contains($env, 'WORKOS_API_KEY=')) {
-			file_put_contents(base_path('.env'), "\n\nWORKOS_API_KEY=\nWORKOS_CLIENT_ID=\n", FILE_APPEND);
-		}
-	}
+        if (! str_contains($env, 'WORKOS_API_KEY=')) {
+            file_put_contents(base_path('.env'), "\n\nWORKOS_API_KEY=\nWORKOS_CLIENT_ID=\n", FILE_APPEND);
+        }
+    }
 
-	protected function updateConfigApp()
-	{
-		$configPath = config_path('app.php');
-		$content = file_get_contents($configPath);
+    protected function updateConfigApp()
+    {
+        $configPath = config_path('app.php');
+        $content = file_get_contents($configPath);
 
         // Add the provider if it's not already there
-        if (!str_contains($content, 'App\\Providers\\WorkOSServiceProvider::class')) {
+        if (! str_contains($content, 'App\\Providers\\WorkOSServiceProvider::class')) {
             $content = str_replace(
                 "'providers' => ServiceProvider::defaultProviders()->merge([",
                 "'providers' => ServiceProvider::defaultProviders()->merge([\n        App\\Providers\\WorkOSServiceProvider::class,",
@@ -79,5 +79,5 @@ class InstallWorkOS extends Command
             );
             file_put_contents($configPath, $content);
         }
-	}
+    }
 }

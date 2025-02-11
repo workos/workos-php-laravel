@@ -38,6 +38,13 @@
       "WorkOS\\Laravel\\": "src/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "WorkOS\\Laravel\\WorkOSServiceProvider"
+      ]
+    }
+  },
   "autoload-dev": {
     "psr-4": {
       "WORKOS\\Laravel\\": [

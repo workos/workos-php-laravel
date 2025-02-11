@@ -6,26 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up()
-	{
-    // first make the password nullable
-		Schema::table('users', function (Blueprint $table) {
-			$table->string('password')->nullable()->change();
-		});
+    public function up()
+    {
+        // first make the password nullable
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('password')->nullable()->change();
+        });
 
-		Schema::table('users', function (Blueprint $table) {
-			$table->string('workos_id')->nullable()->unique();
-			$table->string('organization_id')->nullable();
-			$table->json('sso_data')->nullable();
-		});
-	}
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('workos_id')->nullable()->unique();
+        });
+    }
 
-	public function down()
-	{
-		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn((['workos_id', 'organization_id', 'sso_data']));
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn((['workos_id', 'organization_id', 'sso_data']));
 
-      $table->string('password')->nullable(false)->change();
-		});
-	}
+            // Note: Not changing the password back to not nullable
+            // as it could cause issues with existing users
+        });
+    }
 };

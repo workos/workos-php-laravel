@@ -17,7 +17,7 @@ class WorkOSGuard implements Guard
 
     public function user()
     {
-        if (!is_null($this->user)) {
+        if (! is_null($this->user)) {
             return $this->user;
         }
 

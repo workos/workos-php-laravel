@@ -14,7 +14,7 @@ class WorkOSAuthController extends Controller
 
     public function __construct()
     {
-        $this->userManagement = new UserManagement();
+        $this->userManagement = new UserManagement;
     }
 
     public function redirect()
@@ -28,7 +28,7 @@ class WorkOSAuthController extends Controller
             return redirect($authorizationUrl);
         } catch (WorkOSException $e) {
             return redirect()->route('workos.login')->withErrors([
-                'workos' => 'Authentication failed: ' . $e->getMessage()
+                'workos' => 'Authentication failed: '.$e->getMessage(),
             ]);
         }
     }
@@ -45,14 +45,12 @@ class WorkOSAuthController extends Controller
 
             // Find or create user
             $user = $userModel::findByWorkOSId($auth->user->id);
-            $name = $auth->user->firstName . ' ' . $auth->user->lastName;
-            if (!$user) {
+            $name = $auth->user->firstName.' '.$auth->user->lastName;
+            if (! $user) {
                 $user = $userModel::create([
                     'name' => $name,
                     'email' => $auth->user->email,
                     'workos_id' => $auth->user->id,
-                    'organization' => $auth->organizationId,
-                    'sso_data' => $auth->user->toArray(),
                 ]);
             }
 
@@ -61,12 +59,13 @@ class WorkOSAuthController extends Controller
             return redirect(config('workos.redirect_after_login'));
         } catch (\Exception $e) {
             return redirect()->route('workos.login')->withErrors([
-                'workos' => 'Authentication failed: ' . $e->getMessage()
+                'workos' => 'Authentication failed: '.$e->getMessage(),
             ]);
         }
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         try {
             $logoutUrl = $this->userManagement->getLogoutUrl(
                 sessionId: $request->session()->getId(),
@@ -80,7 +79,7 @@ class WorkOSAuthController extends Controller
             return redirect('/');
         } catch (\Exception $e) {
             return redirect()->route('login')->withErrors([
-                'workos' => 'Logout failed: ' . $e->getMessage()
+                'workos' => 'Logout failed: '.$e->getMessage(),
             ]);
         }
     }
