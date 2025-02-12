@@ -2,10 +2,8 @@
 
 namespace WorkOS\Laravel;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use WorkOS\Laravel\Auth\WorkOSGuard;
 use WorkOS\Laravel\Console\Commands\InstallWorkOS;
 
 /**
@@ -78,13 +76,6 @@ class WorkOSServiceProvider extends ServiceProvider
 
         /* $this->loadRoutesFrom(base_path('routes'), 'workos'); */
         $this->loadViewsFrom(resource_path(('views/vendor/workos')), 'workos');
-
-        Auth::extend('workos', function ($app, $name, array $config) {
-            return new WorkOSGuard(
-                $app->make(\WorkOS\WorkOS::class),
-                $app['auth']->createUserProvider($config['provider']),
-            );
-        });
     }
 
     protected function migrationFileExists(string $migrationFileName)

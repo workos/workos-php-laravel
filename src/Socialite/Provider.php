@@ -2,118 +2,92 @@
 
 namespace WorkOS\Laravel\Socialite;
 
-use Laravel\Socialite\Two\InvalidStateException;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 use SocialiteProviders\Manager\OAuth2\User;
-use WorkOS\UserManagement;
 
 class Provider extends AbstractProvider
 {
     public const IDENTIFIER = 'WORKOS';
 
-    protected $scopes = ['openid', 'profile', 'email'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $scopes = [
+        'openid',
+        'profile',
+        'email',
+    ];
 
     protected $scopeSeparator = ' ';
 
-    protected $useAuthkit = true;
+    protected $useAuthKit = true;
 
-    protected UserManagement $userManagement;
-
-    protected $rawResponse;
-
-    protected $paramaters = [];
-
-    public function __construct(...$args)
-    {
-        parent::__construct(...$args);
-
-        $this->userManagement = new UserManagement;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     protected function getAuthUrl($state)
     {
-        return $this->userManagement->getAuthorizationUrl(
-            redirectUri: $this->redirectUrl,
-            state: ['state' => $state],
-            provider: $this->useAuthkit ? 'authkit' : null,
-            connectionId: $this->paramaters['connection_id'] ?? null,
-            organizationId: $this->paramaters['organization_id'] ?? null
-        );
+        $authUrl = $this->buildAuthUrlFromBase('https://api.workos.com/user_management/authorize', $state);
+
+        if ($this->useAuthKit) {
+            $authUrl .= '&provider=authkit';
+        }
+
+        return $authUrl;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getTokenUrl()
     {
-        // FIXME: is this required?
-        return '';
+        return 'https://api.workos.com/user_management/authenticate';
     }
 
-    public function user()
-    {
-        if ($this->user) {
-            return $this->user;
-        }
-
-        if ($this->hasInvalidState()) {
-            throw new InvalidStateException;
-        }
-
-        $response = $this->userManagement->authenticateWithCode(clientId: $this->clientId, code: $this->getCode());
-
-        $this->rawResponse = $response;
-
-        $user = $this->mapUserToObject($response->raw['user']);
-
-        return $user;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     protected function getUserByToken($token)
     {
-        $res = $this->userManagement->authenticateWithCode(clientId: $this->clientId, code: $token);
-
-        return $res;
+        return $this->credentialsResponseBody;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
-            'id' => $user['id'],
-            'nickname' => $user['email'] ?? null,
-            'name' => trim(($user['first_name'] ?? '').' '.($user['last_name'] ?? '')),
-            'email' => $user['email'] ?? null,
-            'avatar' => $user['profile_picture_url'] ?? null,
-            'organization_id' => $user['organization_id'] ?? null,
+            'id' => $user['user']['id'],
+            'nickname' => $user['user']['email'] ?? null,
+            'name' => trim(($user['user']['first_name'] ?? '').' '.($user['user']['last_name'] ?? '')),
+            'email' => $user['user']['email'] ?? null,
+            'avatar' => $user['user']['profile_picture_url'] ?? null,
         ]);
-    }
-
-    protected function getCodeFields($state = null)
-    {
-        $fields = parent::getCodeFields($state);
-
-        dd($fields);
-
-        return array_merge($fields, $this->paramaters);
     }
 
     public function withOrganizationId($organizationId)
     {
-        $this->useAuthkit = false;
-        $this->paramaters['organization_id'] = $organizationId;
+        $this->useAuthKit = false;
+
+        $this->parameters['organization_id'] = $organizationId;
 
         return $this;
     }
 
     public function withConnectionId($connectionId)
     {
-        $this->useAuthkit = false;
-        $this->paramaters['connection_id'] = $connectionId;
+        $this->useAuthKit = false;
+
+        $this->parameters['connection_id'] = $connectionId;
 
         return $this;
     }
 
     public function withProvider($provider)
     {
-        $this->useAuthkit = false;
-        $this->paramaters['provider'] = $provider;
+        $this->useAuthKit = false;
+        $this->parameters['provider'] = $provider;
 
         return $this;
     }
