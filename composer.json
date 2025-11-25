@@ -3,12 +3,9 @@
   "description": "WorkOS PHP Library for Laravel",
   "keywords": [
     "laravel",
-    "laravel 5",
-    "laravel 6",
-    "laravel 7",
-    "laravel 8",
-    "laravel 9",
     "laravel 10",
+    "laravel 11",
+    "laravel 12",
     "workos",
     "sdk",
     "sso"
@@ -21,7 +18,7 @@
     }
   ],
   "require": {
-    "php": ">=5.6.0",
+    "php": ">=8.1.0",
     "workos/workos-php": "^v4.27.0"
   },
   "require-dev": {
