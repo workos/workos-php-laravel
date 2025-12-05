@@ -14,17 +14,6 @@ To install via composer, run the following:
 composer require workos/workos-php-laravel
 ```
 
-For Laravel 5.0-5.4, add the WorkOS ServiceProvider in your `config/app.php`:
-
-```php
-"providers" => array(
-    // ...
-    WorkOS\Laravel\WorkOSServiceProvider::class
-)
-```
-
-For Laravel 5.5 and up, 6.x and 7.x... you're all set!
-
 ## Configuration
 
 Create a WorkOS configuration file by running the following:
