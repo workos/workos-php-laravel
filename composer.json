@@ -19,11 +19,14 @@
   ],
   "require": {
     "php": ">=8.1.0",
+    "illuminate/contracts": "^11.0|^12.0",
+    "illuminate/support": "^11.0|^12.0",
     "workos/workos-php": "^v4.29.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.15 || ^3.6",
-    "phpunit/phpunit": "^5.7 || ^10.1"
+    "phpunit/phpunit": "^5.7 || ^10.1",
+    "orchestra/testbench": "^9.0|^10.0"
   },
   "suggest": {
     "laravel/framework": "For testing"
@@ -31,7 +34,10 @@
   "autoload": {
     "psr-4": {
       "WorkOS\\Laravel\\": "lib/"
-    }
+    },
+    "files": [
+      "lib/helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
@@ -45,7 +51,10 @@
     "laravel": {
       "providers": [
         "WorkOS\\Laravel\\WorkOSServiceProvider"
-      ]
+      ],
+      "aliases": {
+        "WorkOS": "WorkOS\\Laravel\\Facades\\WorkOS"
+      }
     }
   },
   "scripts": {
