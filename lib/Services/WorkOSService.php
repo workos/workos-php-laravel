@@ -9,9 +9,13 @@ use WorkOS\AuditLogs;
 use WorkOS\DirectorySync;
 use WorkOS\MFA;
 use WorkOS\Organizations;
+use WorkOS\Passwordless;
 use WorkOS\Portal;
 use WorkOS\SSO;
 use WorkOS\UserManagement;
+use WorkOS\Vault;
+use WorkOS\Webhook;
+use WorkOS\Widgets;
 
 /**
  * A singleton class that provides a fluent interface for accessing WorkOS services
@@ -21,9 +25,13 @@ use WorkOS\UserManagement;
  * @method \WorkOS\DirectorySync directorySync()
  * @method \WorkOS\MFA mfa()
  * @method \WorkOS\Organizations organizations()
+ * @method \WorkOS\Passwordless passwordless()
  * @method \WorkOS\Portal portal()
  * @method \WorkOS\SSO sso()
  * @method \WorkOS\UserManagement userManagement()
+ * @method \WorkOS\Vault vault()
+ * @method \WorkOS\Webhook webhook()
+ * @method \WorkOS\Widgets widgets()
  */
 class WorkOSService
 {
@@ -44,9 +52,13 @@ class WorkOSService
         'directorySync' => DirectorySync::class,
         'mfa' => MFA::class,
         'organizations' => Organizations::class,
+        'passwordless' => Passwordless::class,
         'portal' => Portal::class,
         'sso' => SSO::class,
         'userManagement' => UserManagement::class,
+        'vault' => Vault::class,
+        'webhook' => Webhook::class,
+        'widgets' => Widgets::class,
     ];
 
     /**
