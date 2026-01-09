@@ -24,7 +24,7 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.15 || ^3.6",
     "phpunit/phpunit": "^10.1 || ^11.0",
-    "orchestra/testbench": "^10.8"
+    "orchestra/testbench": "^8.0 || ^9.0 || ^10.0"
   },
   "suggest": {
     "laravel/framework": "For testing"
