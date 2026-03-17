@@ -39,12 +39,14 @@ class WorkOSFacadeTest extends LaravelTestCase
     {
         WorkOS::setFacadeApplication($this->app);
 
-        $this->assertInstanceOf(\WorkOS\AuditLogs::class, WorkOS::auditLogs());
-        $this->assertInstanceOf(\WorkOS\DirectorySync::class, WorkOS::directorySync());
-        $this->assertInstanceOf(\WorkOS\MFA::class, WorkOS::mfa());
-        $this->assertInstanceOf(\WorkOS\Organizations::class, WorkOS::organizations());
-        $this->assertInstanceOf(\WorkOS\Portal::class, WorkOS::portal());
-        $this->assertInstanceOf(\WorkOS\SSO::class, WorkOS::sso());
-        $this->assertInstanceOf(\WorkOS\UserManagement::class, WorkOS::userManagement());
+        $service = new WorkOSService();
+        $reflection = new \ReflectionClass($service);
+        $property = $reflection->getProperty('serviceMap');
+        $property->setAccessible(true);
+        $serviceMap = $property->getValue($service);
+
+        foreach ($serviceMap as $method => $class) {
+            $this->assertInstanceOf($class, WorkOS::$method(), "Facade method {$method}() should return an instance of {$class}");
+        }
     }
 }
