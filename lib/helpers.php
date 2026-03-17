@@ -8,7 +8,7 @@ if (! function_exists('workos')) {
     /**
      * Access the WorkOS Manager.
      *
-     * @return \WorkOS\Laravel\WorkOSManager
+     * @return \WorkOS\Laravel\Services\WorkOSService
      */
     function workos()
     {

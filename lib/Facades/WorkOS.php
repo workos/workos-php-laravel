@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \WorkOS\Webhook webhook()
  * @method static \WorkOS\Widgets widgets()
  *
- * @see \WorkOS\Laravel\WorkOSService
+ * @see \WorkOS\Laravel\Services\WorkOSService
  */
 class WorkOS extends Facade
 {

@@ -78,6 +78,6 @@ class WorkOSService
             return $this->instances[$name];
         }
 
-        return $this->instances[$name] = $arguments ? new $this->serviceMap[$name]($arguments) : new $this->serviceMap[$name];
+        return $this->instances[$name] = $arguments ? new $this->serviceMap[$name](...$arguments) : new $this->serviceMap[$name];
     }
 }
