@@ -11,6 +11,7 @@ use WorkOS\MFA;
 use WorkOS\Organizations;
 use WorkOS\Passwordless;
 use WorkOS\Portal;
+use WorkOS\RBAC;
 use WorkOS\SSO;
 use WorkOS\UserManagement;
 use WorkOS\Vault;
@@ -27,6 +28,7 @@ use WorkOS\Widgets;
  * @method \WorkOS\Organizations organizations()
  * @method \WorkOS\Passwordless passwordless()
  * @method \WorkOS\Portal portal()
+ * @method \WorkOS\RBAC rbac()
  * @method \WorkOS\SSO sso()
  * @method \WorkOS\UserManagement userManagement()
  * @method \WorkOS\Vault vault()
@@ -54,6 +56,7 @@ class WorkOSService
         'organizations' => Organizations::class,
         'passwordless' => Passwordless::class,
         'portal' => Portal::class,
+        'rbac' => RBAC::class,
         'sso' => SSO::class,
         'userManagement' => UserManagement::class,
         'vault' => Vault::class,

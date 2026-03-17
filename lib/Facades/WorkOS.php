@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \WorkOS\Organizations organizations()
  * @method static \WorkOS\Passwordless passwordless()
  * @method static \WorkOS\Portal portal()
+ * @method static \WorkOS\RBAC rbac()
  * @method static \WorkOS\SSO sso()
  * @method static \WorkOS\UserManagement userManagement()
  * @method static \WorkOS\Vault vault()

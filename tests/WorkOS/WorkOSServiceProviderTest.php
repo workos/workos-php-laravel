@@ -121,7 +121,7 @@ class WorkOSServiceProviderTest extends LaravelTestCase
             $className = basename($file, '.php');
 
             // Skip utility classes that aren't services
-            if (in_array($className, ['WorkOS', 'Client', 'Version', 'Resource'])) {
+            if (in_array($className, ['WorkOS', 'Client', 'Version', 'Resource', 'CookieSession'])) {
                 continue;
             }
 
