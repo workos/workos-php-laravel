@@ -39,6 +39,7 @@ class WorkOSServiceProvider extends ServiceProvider
             $args = [
                 'apiKey' => $config['api_key'] ?? null,
                 'clientId' => $config['client_id'] ?? null,
+                'userAgent' => sprintf('%s/%s', Version::SDK_IDENTIFIER, Version::SDK_VERSION),
             ];
 
             if (! empty($config['api_base_url'])) {
