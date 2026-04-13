@@ -38,6 +38,20 @@ class WorkOSServiceProviderTest extends LaravelTestCase
         $client = $this->app->make('workos');
 
         $this->assertInstanceOf(WorkOS::class, $client);
+
+        // Verify the configured values actually reach the underlying HttpClient,
+        // so a typo in the provider's constructor arg names would be caught.
+        $httpClient = (new \ReflectionClass($client))
+            ->getProperty('httpClient')
+            ->getValue($client);
+
+        $this->assertSame('pk_secretsauce', $httpClient->getApiKey());
+        $this->assertSame('client_pizza', $httpClient->getClientId());
+
+        $baseUrl = (new \ReflectionClass($httpClient))
+            ->getProperty('baseUrl')
+            ->getValue($httpClient);
+        $this->assertSame('https://workos-hop.com/', $baseUrl);
     }
 
     public function test_workos_helper_function_returns_workos_client_instance()
@@ -104,7 +118,14 @@ class WorkOSServiceProviderTest extends LaravelTestCase
 
         $client = $this->app->make('workos');
 
-        $this->assertInstanceOf(WorkOS::class, $client);
+        $httpClient = (new \ReflectionClass($client))
+            ->getProperty('httpClient')
+            ->getValue($client);
+        $baseUrl = (new \ReflectionClass($httpClient))
+            ->getProperty('baseUrl')
+            ->getValue($httpClient);
+
+        $this->assertSame('https://custom-api.workos.com/', $baseUrl);
     }
 
     public function test_user_agent_identifies_laravel_sdk()
