@@ -36,9 +36,19 @@ class WorkOSServiceProvider extends ServiceProvider
         $this->app->singleton('workos', function ($app) {
             $config = $app['config']->get('workos');
 
+            foreach (['api_key', 'client_id'] as $required) {
+                if (empty($config[$required])) {
+                    throw new \RuntimeException(
+                        "WorkOS is not configured: `workos.{$required}` is missing. "
+                        ."Set the corresponding environment variable (e.g. WORKOS_API_KEY, WORKOS_CLIENT_ID) "
+                        ."or publish and edit config/workos.php."
+                    );
+                }
+            }
+
             $args = [
-                'apiKey' => $config['api_key'] ?? null,
-                'clientId' => $config['client_id'] ?? null,
+                'apiKey' => $config['api_key'],
+                'clientId' => $config['client_id'],
                 'userAgent' => sprintf('%s/%s', Version::SDK_IDENTIFIER, Version::SDK_VERSION),
             ];
 
