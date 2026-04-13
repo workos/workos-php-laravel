@@ -3,9 +3,9 @@
   "description": "WorkOS PHP Library for Laravel",
   "keywords": [
     "laravel",
-    "laravel 10",
     "laravel 11",
     "laravel 12",
+    "laravel 13",
     "workos",
     "sdk",
     "sso"
@@ -19,14 +19,14 @@
   ],
   "require": {
     "php": ">=8.2.0",
-    "illuminate/contracts": "^10.0|^11.0|^12.0",
-    "illuminate/support": "^10.0|^11.0|^12.0",
+    "illuminate/contracts": "^11.0|^12.0|^13.0",
+    "illuminate/support": "^11.0|^12.0|^13.0",
     "workos/workos-php": "^5.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.64",
     "phpunit/phpunit": "^10.1 || ^11.0",
-    "orchestra/testbench": "^8.0|^9.0|^10.0"
+    "orchestra/testbench": "^9.0|^10.0|^11.0"
   },
   "suggest": {
     "laravel/framework": "For testing"
