@@ -3,7 +3,6 @@
 namespace WorkOS\Laravel;
 
 use WorkOS\Laravel\Facades\WorkOS;
-use WorkOS\Laravel\Services\WorkOSService;
 
 class WorkOSFacadeTest extends LaravelTestCase
 {
@@ -28,24 +27,44 @@ class WorkOSFacadeTest extends LaravelTestCase
         }
     }
 
-    public function test_facade_resolves_workos_service()
+    public function test_facade_resolves_workos_client()
     {
         WorkOS::setFacadeApplication($this->app);
 
-        $this->assertInstanceOf(\WorkOS\UserManagement::class, WorkOS::userManagement());
+        $this->assertInstanceOf(\WorkOS\Service\UserManagement::class, WorkOS::userManagement());
     }
 
     public function test_facade_provides_access_to_all_services()
     {
         WorkOS::setFacadeApplication($this->app);
 
-        $service = new WorkOSService();
-        $reflection = new \ReflectionClass($service);
-        $property = $reflection->getProperty('serviceMap');
-        $property->setAccessible(true);
-        $serviceMap = $property->getValue($service);
+        $expectedServices = [
+            'adminPortal' => \WorkOS\Service\AdminPortal::class,
+            'apiKeys' => \WorkOS\Service\ApiKeys::class,
+            'auditLogs' => \WorkOS\Service\AuditLogs::class,
+            'authorization' => \WorkOS\Service\Authorization::class,
+            'connect' => \WorkOS\Service\Connect::class,
+            'directorySync' => \WorkOS\Service\DirectorySync::class,
+            'events' => \WorkOS\Service\Events::class,
+            'featureFlags' => \WorkOS\Service\FeatureFlags::class,
+            'multiFactorAuth' => \WorkOS\Service\MultiFactorAuth::class,
+            'organizationDomains' => \WorkOS\Service\OrganizationDomains::class,
+            'organizations' => \WorkOS\Service\Organizations::class,
+            'passwordless' => \WorkOS\Passwordless::class,
+            'pipes' => \WorkOS\Service\Pipes::class,
+            'pkce' => \WorkOS\PKCEHelper::class,
+            'radar' => \WorkOS\Service\Radar::class,
+            'sessionManager' => \WorkOS\SessionManager::class,
+            'sso' => \WorkOS\Service\SSO::class,
+            'userManagement' => \WorkOS\Service\UserManagement::class,
+            'vault' => \WorkOS\Vault::class,
+            'webhookVerification' => \WorkOS\WebhookVerification::class,
+            'webhooks' => \WorkOS\Service\Webhooks::class,
+            'widgets' => \WorkOS\Service\Widgets::class,
+            'actions' => \WorkOS\Actions::class,
+        ];
 
-        foreach ($serviceMap as $method => $class) {
+        foreach ($expectedServices as $method => $class) {
             $this->assertInstanceOf($class, WorkOS::$method(), "Facade method {$method}() should return an instance of {$class}");
         }
     }

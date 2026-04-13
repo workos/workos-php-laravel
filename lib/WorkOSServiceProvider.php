@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WorkOS\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use WorkOS\Laravel\Services\WorkOSService;
+use WorkOS\WorkOS;
 
 /**
  * Class WorkOSServiceProvider.
@@ -32,25 +32,25 @@ class WorkOSServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/workos.php', 'workos');
 
-        // Ensures that the WorkOS service is configured only once, rather than every request
+        // Ensures that the WorkOS client is configured only once, rather than every request
         $this->app->singleton('workos', function ($app) {
             $config = $app['config']->get('workos');
 
-            \WorkOS\WorkOS::setApiKey($config['api_key']);
-            \WorkOS\WorkOS::setClientId($config['client_id']);
-            \WorkOS\WorkOS::setIdentifier(Version::SDK_IDENTIFIER);
-            \WorkOS\WorkOS::setVersion(Version::SDK_VERSION);
+            $args = [
+                'apiKey' => $config['api_key'] ?? null,
+                'clientId' => $config['client_id'] ?? null,
+            ];
 
-            if ($config['api_base_url']) {
-                \WorkOS\WorkOS::setApiBaseUrl($config['api_base_url']);
+            if (! empty($config['api_base_url'])) {
+                $args['baseUrl'] = $config['api_base_url'];
             }
 
-            return new WorkOSService;
+            return new WorkOS(...$args);
         });
 
-        // Allows for dependency injection (e.g. `show(WorkOSService $service)`)
+        // Allows for dependency injection (e.g. `show(WorkOS $workos)`)
         // while still ensuring we're using the configured singleton rather than
         // potentially generating a new, unconfigured version of the singleton
-        $this->app->alias('workos', WorkOSService::class);
+        $this->app->alias('workos', WorkOS::class);
     }
 }

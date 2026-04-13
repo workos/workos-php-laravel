@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use WorkOS\Laravel\Services\WorkOSService;
+use WorkOS\WorkOS;
 
 if (! function_exists('workos')) {
     /**
-     * Access the WorkOS Manager.
+     * Access the configured WorkOS client.
      *
-     * @return \WorkOS\Laravel\Services\WorkOSService
+     * @return \WorkOS\WorkOS
      */
     function workos()
     {
-        return app(WorkOSService::class);
+        return app(WorkOS::class);
     }
 }
