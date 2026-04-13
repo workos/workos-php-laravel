@@ -126,7 +126,23 @@ Note that `webhook()` was split into two distinct services: `webhooks()` for CRU
 
 The `config/workos.php` file itself is unchanged — the same `api_key`, `client_id`, and `api_base_url` keys are recognized, with the same env var defaults (`WORKOS_API_KEY`, `WORKOS_CLIENT_ID`). **No changes to your published config file are required.**
 
-Internally, the service provider no longer calls the removed static helpers `WorkOS::setApiKey()`, `WorkOS::setClientId()`, `WorkOS::setIdentifier()`, `WorkOS::setVersion()`, or `WorkOS::setApiBaseUrl()`. Config values are now passed directly to the `\WorkOS\WorkOS` constructor. If your application was reading those static values back (e.g. `\WorkOS\WorkOS::getApiKey()`), that state is no longer populated by this package — read from `config('workos.api_key')` instead.
+Internally, the service provider no longer calls the removed static helpers `WorkOS::setApiKey()`, `WorkOS::setClientId()`, `WorkOS::setIdentifier()`, `WorkOS::setVersion()`, or `WorkOS::setApiBaseUrl()`. Config values are now passed directly to the `\WorkOS\WorkOS` constructor.
+
+### Static readbacks no longer populated
+
+If your application was reading configuration back from the global static state (e.g. `\WorkOS\WorkOS::getApiKey()`), **those values will now be `null`** — the service provider populates an instance, not the static registry. Read from Laravel config instead:
+
+| Before                            | After                           |
+| --------------------------------- | ------------------------------- |
+| `\WorkOS\WorkOS::getApiKey()`     | `config('workos.api_key')`      |
+| `\WorkOS\WorkOS::getClientId()`   | `config('workos.client_id')`    |
+| `\WorkOS\WorkOS::getApiBaseUrl()` | `config('workos.api_base_url')` |
+
+To find affected call sites in your application:
+
+```bash
+grep -rn 'WorkOS\\WorkOS::\(get\|set\)\(ApiKey\|ClientId\|ApiBaseUrl\|Identifier\|Version\)' app/ config/ routes/
+```
 
 ---
 
