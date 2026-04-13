@@ -106,4 +106,18 @@ class WorkOSServiceProviderTest extends LaravelTestCase
 
         $this->assertInstanceOf(WorkOS::class, $client);
     }
+
+    public function test_user_agent_identifies_laravel_sdk()
+    {
+        $client = $this->app->make('workos');
+
+        $httpClient = (new \ReflectionClass($client))->getProperty('httpClient')->getValue($client);
+        $userAgent = (new \ReflectionClass($httpClient))->getProperty('userAgent')->getValue($httpClient);
+
+        $this->assertSame(
+            sprintf('%s/%s', Version::SDK_IDENTIFIER, Version::SDK_VERSION),
+            $userAgent
+        );
+        $this->assertStringStartsWith('WorkOS PHP Laravel/', $userAgent);
+    }
 }
