@@ -1,5 +1,19 @@
 # Changelog
 
+## [6.0.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.1.0...workos/workos-php-laravel-v6.0.0) (2026-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* v6 is a major rewrite of the Laravel SDK to align with the redesigned `workos/workos-php` v5 client.
+* `WorkOS\Laravel\Services\WorkOSService` has been removed. The container, helper, and facade now resolve to `\WorkOS\WorkOS` directly.
+* Several service accessors were renamed upstream: `mfa()` → `multiFactorAuth()`, `portal()` → `adminPortal()`, `rbac()` → `authorization()`, and `webhook()` was split into `webhooks()` and `webhookVerification()`.
+* Before upgrading, follow `docs/V6_MIGRATION_GUIDE.md`.
+
+### Features
+
+* rewrite the Laravel integration as a thin adapter over `workos/workos-php` v5, bind `\WorkOS\WorkOS` directly, and expose the upstream v5 service surface ([#87](https://github.com/workos/workos-php-laravel/issues/87)) ([b72cb58](https://github.com/workos/workos-php-laravel/commit/b72cb58803a14826a0daeec6b2d2adec549c69eb))
+
 ## [5.1.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.0.1...workos/workos-php-laravel-v5.1.0) (2026-03-20)
 
 
