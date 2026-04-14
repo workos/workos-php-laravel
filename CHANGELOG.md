@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.1.0...workos/workos-php-laravel-v6.0.0) (2026-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to workos/workos-php ^5 ([#87](https://github.com/workos/workos-php-laravel/issues/87))
+
+### Features
+
+* upgrade to workos/workos-php ^5 ([#87](https://github.com/workos/workos-php-laravel/issues/87)) ([b72cb58](https://github.com/workos/workos-php-laravel/commit/b72cb58803a14826a0daeec6b2d2adec549c69eb))
+
 ## [5.1.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.0.1...workos/workos-php-laravel-v5.1.0) (2026-03-20)
 
 
