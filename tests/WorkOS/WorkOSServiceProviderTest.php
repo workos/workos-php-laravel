@@ -2,7 +2,7 @@
 
 namespace WorkOS\Laravel;
 
-use WorkOS\Laravel\Services\WorkOSService;
+use WorkOS\WorkOS;
 
 class WorkOSServiceProviderTest extends LaravelTestCase
 {
@@ -27,7 +27,7 @@ class WorkOSServiceProviderTest extends LaravelTestCase
         }
     }
 
-    public function test_register_work_os_service_provider_yields_expected_config()
+    public function test_register_work_os_service_provider_binds_workos_client()
     {
         $this->setDefaultConfig([
             'api_key' => 'pk_secretsauce',
@@ -35,127 +35,110 @@ class WorkOSServiceProviderTest extends LaravelTestCase
             'api_base_url' => 'https://workos-hop.com/',
         ]);
 
-        // Resolve the service to trigger lazy initialization
-        $this->app->make('workos');
+        $client = $this->app->make('workos');
 
-        $this->assertEquals('pk_secretsauce', \WorkOS\WorkOS::getApiKey());
-        $this->assertEquals('client_pizza', \WorkOS\WorkOS::getClientId());
-        $this->assertEquals('https://workos-hop.com/', \WorkOS\WorkOS::getApiBaseUrl());
+        $this->assertInstanceOf(WorkOS::class, $client);
+
+        // Verify the configured values actually reach the underlying HttpClient,
+        // so a typo in the provider's constructor arg names would be caught.
+        $httpClient = (new \ReflectionClass($client))
+            ->getProperty('httpClient')
+            ->getValue($client);
+
+        $this->assertSame('pk_secretsauce', $httpClient->getApiKey());
+        $this->assertSame('client_pizza', $httpClient->getClientId());
+
+        $baseUrl = (new \ReflectionClass($httpClient))
+            ->getProperty('baseUrl')
+            ->getValue($httpClient);
+        $this->assertSame('https://workos-hop.com/', $baseUrl);
     }
 
-    public function test_workos_helper_function_returns_work_os_service_instance()
+    public function test_workos_helper_function_returns_workos_client_instance()
     {
-        $this->assertInstanceOf(WorkOSService::class, workos());
+        $this->assertInstanceOf(WorkOS::class, workos());
     }
 
     public function test_workos_helper_function_enables_fluent_access()
     {
-        $this->assertInstanceOf(\WorkOS\UserManagement::class, workos()->userManagement());
+        $this->assertInstanceOf(\WorkOS\Service\UserManagement::class, workos()->userManagement());
     }
 
-    public function test_it_resolves_service_via_injection_and_configures_sdk()
+    public function test_it_resolves_client_via_injection()
     {
-        $service = $this->app->make(WorkOSService::class);
+        $client = $this->app->make(WorkOS::class);
 
-        $this->assertInstanceOf(WorkOSService::class, $service);
-        $this->assertSame($service, $this->app->make('workos'));
-        $this->assertSame($service, workos());
+        $this->assertInstanceOf(WorkOS::class, $client);
+        $this->assertSame($client, $this->app->make('workos'));
+        $this->assertSame($client, workos());
     }
 
-    public function test_workos_service_resolves_all_supported_services()
+    public function test_workos_client_resolves_all_supported_services()
     {
-        $service = workos();
+        $client = workos();
 
-        $this->assertInstanceOf(\WorkOS\AuditLogs::class, $service->auditLogs());
-        $this->assertInstanceOf(\WorkOS\DirectorySync::class, $service->directorySync());
-        $this->assertInstanceOf(\WorkOS\MFA::class, $service->mfa());
-        $this->assertInstanceOf(\WorkOS\Organizations::class, $service->organizations());
-        $this->assertInstanceOf(\WorkOS\Passwordless::class, $service->passwordless());
-        $this->assertInstanceOf(\WorkOS\Portal::class, $service->portal());
-        $this->assertInstanceOf(\WorkOS\SSO::class, $service->sso());
-        $this->assertInstanceOf(\WorkOS\UserManagement::class, $service->userManagement());
-        $this->assertInstanceOf(\WorkOS\Vault::class, $service->vault());
-        $this->assertInstanceOf(\WorkOS\Webhook::class, $service->webhook());
-        $this->assertInstanceOf(\WorkOS\Widgets::class, $service->widgets());
+        $this->assertInstanceOf(\WorkOS\Actions::class, $client->actions());
+        $this->assertInstanceOf(\WorkOS\Service\AdminPortal::class, $client->adminPortal());
+        $this->assertInstanceOf(\WorkOS\Service\ApiKeys::class, $client->apiKeys());
+        $this->assertInstanceOf(\WorkOS\Service\AuditLogs::class, $client->auditLogs());
+        $this->assertInstanceOf(\WorkOS\Service\Authorization::class, $client->authorization());
+        $this->assertInstanceOf(\WorkOS\Service\Connect::class, $client->connect());
+        $this->assertInstanceOf(\WorkOS\Service\DirectorySync::class, $client->directorySync());
+        $this->assertInstanceOf(\WorkOS\Service\Events::class, $client->events());
+        $this->assertInstanceOf(\WorkOS\Service\FeatureFlags::class, $client->featureFlags());
+        $this->assertInstanceOf(\WorkOS\Service\MultiFactorAuth::class, $client->multiFactorAuth());
+        $this->assertInstanceOf(\WorkOS\Service\OrganizationDomains::class, $client->organizationDomains());
+        $this->assertInstanceOf(\WorkOS\Service\Organizations::class, $client->organizations());
+        $this->assertInstanceOf(\WorkOS\Passwordless::class, $client->passwordless());
+        $this->assertInstanceOf(\WorkOS\Service\Pipes::class, $client->pipes());
+        $this->assertInstanceOf(\WorkOS\PKCEHelper::class, $client->pkce());
+        $this->assertInstanceOf(\WorkOS\Service\Radar::class, $client->radar());
+        $this->assertInstanceOf(\WorkOS\SessionManager::class, $client->sessionManager());
+        $this->assertInstanceOf(\WorkOS\Service\SSO::class, $client->sso());
+        $this->assertInstanceOf(\WorkOS\Service\UserManagement::class, $client->userManagement());
+        $this->assertInstanceOf(\WorkOS\Vault::class, $client->vault());
+        $this->assertInstanceOf(\WorkOS\WebhookVerification::class, $client->webhookVerification());
+        $this->assertInstanceOf(\WorkOS\Service\Webhooks::class, $client->webhooks());
+        $this->assertInstanceOf(\WorkOS\Service\Widgets::class, $client->widgets());
     }
 
-    public function test_workos_service_caches_service_instances()
+    public function test_workos_client_caches_service_instances()
     {
-        $service = workos();
+        $client = workos();
 
-        $userManagement1 = $service->userManagement();
-        $userManagement2 = $service->userManagement();
+        $userManagement1 = $client->userManagement();
+        $userManagement2 = $client->userManagement();
 
         $this->assertSame($userManagement1, $userManagement2);
     }
 
-    public function test_workos_service_throws_exception_for_unsupported_service()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('WorkOS service [unsupportedService] is not supported.');
-
-        $service = workos();
-        $service->unsupportedService();
-    }
-
-    public function test_api_base_url_is_set_when_provided()
+    public function test_api_base_url_is_accepted_when_provided()
     {
         $this->setDefaultConfig(['api_base_url' => 'https://custom-api.workos.com/']);
 
-        $this->app->make('workos');
+        $client = $this->app->make('workos');
 
-        $this->assertEquals('https://custom-api.workos.com/', \WorkOS\WorkOS::getApiBaseUrl());
+        $httpClient = (new \ReflectionClass($client))
+            ->getProperty('httpClient')
+            ->getValue($client);
+        $baseUrl = (new \ReflectionClass($httpClient))
+            ->getProperty('baseUrl')
+            ->getValue($httpClient);
+
+        $this->assertSame('https://custom-api.workos.com/', $baseUrl);
     }
 
-    public function test_service_map_includes_all_available_workos_services()
+    public function test_user_agent_identifies_laravel_sdk()
     {
-        // Discover available services from the WorkOS PHP SDK
-        $libPath = __DIR__ . '/../../vendor/workos/workos-php/lib';
-        $availableServices = [];
+        $client = $this->app->make('workos');
 
-        if (!is_dir($libPath)) {
-            $this->markTestSkipped('WorkOS PHP SDK vendor directory not found at: ' . $libPath);
-        }
+        $httpClient = (new \ReflectionClass($client))->getProperty('httpClient')->getValue($client);
+        $userAgent = (new \ReflectionClass($httpClient))->getProperty('userAgent')->getValue($httpClient);
 
-        foreach (glob($libPath . '/*.php') as $file) {
-            $className = basename($file, '.php');
-
-            // Skip utility classes that aren't services
-            if (in_array($className, ['WorkOS', 'Client', 'Version', 'Resource', 'CookieSession'])) {
-                continue;
-            }
-
-            // Convert class name to camelCase method name
-            // Special handling for acronyms: MFA -> mfa, SSO -> sso
-            // Note: Str::camel() doesn't work for all-caps (MFA -> mFA, not mfa)
-            if (ctype_upper($className)) {
-                $methodName = strtolower($className);
-            } else {
-                $methodName = lcfirst($className);
-            }
-            $availableServices[$methodName] = "WorkOS\\{$className}";
-        }
-
-        // Get the actual service map from WorkOSService using reflection
-        $service = workos();
-        $reflection = new \ReflectionClass($service);
-        $property = $reflection->getProperty('serviceMap');
-        $property->setAccessible(true);
-        $actualServiceMap = $property->getValue($service);
-
-        // Compare available services with mapped services
-        $missingServices = array_diff_key($availableServices, $actualServiceMap);
-        $extraServices = array_diff_key($actualServiceMap, $availableServices);
-
-        $errorMessage = '';
-        if (!empty($missingServices)) {
-            $errorMessage .= 'Missing services in WorkOSService::$serviceMap: ' . implode(', ', array_keys($missingServices)) . '. ';
-        }
-        if (!empty($extraServices)) {
-            $errorMessage .= 'Extra services in WorkOSService::$serviceMap: ' . implode(', ', array_keys($extraServices)) . '.';
-        }
-
-        $this->assertEmpty($missingServices + $extraServices, $errorMessage);
-        $this->assertEquals($availableServices, $actualServiceMap, 'Service map should match available WorkOS services');
+        $this->assertSame(
+            sprintf('%s/%s', Version::SDK_IDENTIFIER, Version::SDK_VERSION),
+            $userAgent
+        );
+        $this->assertStringStartsWith('WorkOS PHP Laravel/', $userAgent);
     }
 }
