@@ -5,6 +5,7 @@
       "release-type": "php",
       "package-name": "workos/workos-php-laravel",
       "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": false,
       "extra-files": [
         {
           "type": "generic",
