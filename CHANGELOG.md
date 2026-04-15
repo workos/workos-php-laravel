@@ -1,5 +1,18 @@
 # Changelog
 
+## [6.0.1](https://github.com/workos/workos-php-laravel/compare/v6.0.0...v6.0.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* Remove extractVersion from matchUpdateTypes rules ([#95](https://github.com/workos/workos-php-laravel/issues/95)) ([665f3c4](https://github.com/workos/workos-php-laravel/commit/665f3c4b54e9f5f359836f206e2081c10d0eaf6d))
+
+
+### Miscellaneous Chores
+
+* **deps:** update minor and patch updates ([#91](https://github.com/workos/workos-php-laravel/issues/91)) ([bea62b5](https://github.com/workos/workos-php-laravel/commit/bea62b5cc1b4961c3cb9c46e9a32241c418cd940))
+* do not include whole name ([7678389](https://github.com/workos/workos-php-laravel/commit/7678389d73f5b7d4b291dd20b8409acf757a11b3))
+
 ## [6.0.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.1.0...workos/workos-php-laravel-v6.0.0) (2026-04-14)
 
 
