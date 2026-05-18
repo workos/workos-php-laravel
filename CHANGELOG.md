@@ -1,5 +1,30 @@
 # Changelog
 
+## [7.0.0](https://github.com/workos/workos-php-laravel/compare/v6.0.0...v7.0.0) (2026-05-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update dependency workos/workos-php to v6 ([#98](https://github.com/workos/workos-php-laravel/issues/98))
+
+### Features
+
+* **deps:** update dependency workos/workos-php to v6 ([#98](https://github.com/workos/workos-php-laravel/issues/98)) ([a0c710d](https://github.com/workos/workos-php-laravel/commit/a0c710d420cb184682fbbad75dc7b5a22bd98bb0))
+
+
+### Bug Fixes
+
+* Remove extractVersion from matchUpdateTypes rules ([#95](https://github.com/workos/workos-php-laravel/issues/95)) ([665f3c4](https://github.com/workos/workos-php-laravel/commit/665f3c4b54e9f5f359836f206e2081c10d0eaf6d))
+
+
+### Miscellaneous Chores
+
+* **deps:** update googleapis/release-please-action action to v5 ([#97](https://github.com/workos/workos-php-laravel/issues/97)) ([1edeffc](https://github.com/workos/workos-php-laravel/commit/1edeffcdeecba5d8031d60cdaf7ed00aab528eb7))
+* **deps:** update minor and patch updates ([#91](https://github.com/workos/workos-php-laravel/issues/91)) ([bea62b5](https://github.com/workos/workos-php-laravel/commit/bea62b5cc1b4961c3cb9c46e9a32241c418cd940))
+* **deps:** update shivammathur/setup-php action to v2.37.0 ([#96](https://github.com/workos/workos-php-laravel/issues/96)) ([e4dbbec](https://github.com/workos/workos-php-laravel/commit/e4dbbeceb1d566364c65d680443b401a5a77c76a))
+* do not include whole name ([7678389](https://github.com/workos/workos-php-laravel/commit/7678389d73f5b7d4b291dd20b8409acf757a11b3))
+* use shared workos/renovate-config preset ([d4eb457](https://github.com/workos/workos-php-laravel/commit/d4eb45750a26d27f9f10c6c34725a98353b22882))
+
 ## [6.0.0](https://github.com/workos/workos-php-laravel/compare/workos/workos-php-laravel-v5.1.0...workos/workos-php-laravel-v6.0.0) (2026-04-14)
 
 
