@@ -34,49 +34,35 @@ class WorkOSFacadeTest extends LaravelTestCase
         $this->assertInstanceOf(\WorkOS\Service\UserManagement::class, WorkOS::userManagement());
     }
 
-    public function test_facade_provides_access_to_all_services()
+    /**
+     * Calls every public instance accessor on \WorkOS\WorkOS through the facade
+     * and asserts the returned object matches the upstream method's declared
+     * return type. Reflection-driven, so new upstream accessors are picked up
+     * automatically — no test list to maintain.
+     */
+    public function test_facade_proxies_every_upstream_service_accessor()
     {
         WorkOS::setFacadeApplication($this->app);
 
-        $expectedServices = [
-            'adminPortal' => \WorkOS\Service\AdminPortal::class,
-            'apiKeys' => \WorkOS\Service\ApiKeys::class,
-            'auditLogs' => \WorkOS\Service\AuditLogs::class,
-            'authorization' => \WorkOS\Service\Authorization::class,
-            'connect' => \WorkOS\Service\Connect::class,
-            'directorySync' => \WorkOS\Service\DirectorySync::class,
-            'events' => \WorkOS\Service\Events::class,
-            'featureFlags' => \WorkOS\Service\FeatureFlags::class,
-            'multiFactorAuth' => \WorkOS\Service\MultiFactorAuth::class,
-            'organizationDomains' => \WorkOS\Service\OrganizationDomains::class,
-            'organizations' => \WorkOS\Service\Organizations::class,
-            'passwordless' => \WorkOS\Passwordless::class,
-            'pipes' => \WorkOS\Service\Pipes::class,
-            'pkce' => \WorkOS\PKCEHelper::class,
-            'radar' => \WorkOS\Service\Radar::class,
-            'sessionManager' => \WorkOS\SessionManager::class,
-            'sso' => \WorkOS\Service\SSO::class,
-            'userManagement' => \WorkOS\Service\UserManagement::class,
-            'vault' => \WorkOS\Vault::class,
-            'webhookVerification' => \WorkOS\WebhookVerification::class,
-            'webhooks' => \WorkOS\Service\Webhooks::class,
-            'widgets' => \WorkOS\Service\Widgets::class,
-            'actions' => \WorkOS\Actions::class,
-        ];
+        $accessors = $this->upstreamAccessors();
+        $this->assertNotEmpty($accessors, 'Expected at least one upstream WorkOS accessor.');
 
-        foreach ($expectedServices as $method => $class) {
-            $this->assertInstanceOf($class, WorkOS::$method(), "Facade method {$method}() should return an instance of {$class}");
+        foreach ($accessors as $method => $returnType) {
+            $this->assertInstanceOf(
+                $returnType,
+                WorkOS::$method(),
+                "Facade method {$method}() should return an instance of {$returnType}"
+            );
         }
     }
 
-    public function test_facade_covers_every_upstream_service_accessor()
+    /**
+     * @return array<string, class-string> map of accessor name => declared return type
+     */
+    private function upstreamAccessors(): array
     {
-        // Drift guard: if workos/workos-php adds a new service accessor in a
-        // future minor bump (our composer constraint is ^5.0.1), this test
-        // fails so we remember to add it to the @method docblock on the
-        // facade and to the expected-services list above.
         $ref = new \ReflectionClass(\WorkOS\WorkOS::class);
-        $upstreamAccessors = [];
+        $accessors = [];
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->isStatic() || $method->isConstructor()) {
                 continue;
@@ -84,23 +70,13 @@ class WorkOSFacadeTest extends LaravelTestCase
             if ($method->getDeclaringClass()->getName() !== \WorkOS\WorkOS::class) {
                 continue;
             }
-            $upstreamAccessors[] = $method->getName();
+            $returnType = $method->getReturnType();
+            if (! $returnType instanceof \ReflectionNamedType || $returnType->isBuiltin()) {
+                continue;
+            }
+            $accessors[$method->getName()] = $returnType->getName();
         }
 
-        $covered = [
-            'actions', 'adminPortal', 'apiKeys', 'auditLogs', 'authorization',
-            'connect', 'directorySync', 'events', 'featureFlags', 'multiFactorAuth',
-            'organizationDomains', 'organizations', 'passwordless', 'pipes', 'pkce',
-            'radar', 'sessionManager', 'sso', 'userManagement', 'vault',
-            'webhookVerification', 'webhooks', 'widgets',
-        ];
-
-        $missing = array_diff($upstreamAccessors, $covered);
-        $this->assertEmpty(
-            $missing,
-            'Upstream \\WorkOS\\WorkOS exposes service accessor(s) not covered by this '
-            .'package: '.implode(', ', $missing).'. Add them to the @method docblock on '
-            .'WorkOS\\Laravel\\Facades\\WorkOS and to the expected-services test lists.'
-        );
+        return $accessors;
     }
 }
