@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.0.1](https://github.com/workos/workos-php-laravel/compare/v7.0.0...v7.0.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* **renovate:** explicitly enable minor and patch updates ([#99](https://github.com/workos/workos-php-laravel/issues/99)) ([4d2c923](https://github.com/workos/workos-php-laravel/commit/4d2c92340e95dbe4e4362f780695277b39a84a7d))
+
+
+### Miscellaneous Chores
+
+* **deps:** update github actions non-major ([#101](https://github.com/workos/workos-php-laravel/issues/101)) ([0672dad](https://github.com/workos/workos-php-laravel/commit/0672dad789a40cf09aa8ac97ed06e3e012266f58))
+
 ## [7.0.0](https://github.com/workos/workos-php-laravel/compare/v6.0.0...v7.0.0) (2026-05-18)
 
 
