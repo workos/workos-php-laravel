@@ -1,5 +1,18 @@
 # Changelog
 
+## [8.0.0](https://github.com/workos/workos-php-laravel/compare/v7.0.1...v8.0.0) (2026-06-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* require workos-php v7 ([#103](https://github.com/workos/workos-php-laravel/issues/103))
+* drop Laravel 11 support ([#104](https://github.com/workos/workos-php-laravel/issues/104))
+
+### Features
+
+* drop Laravel 11 support ([#104](https://github.com/workos/workos-php-laravel/issues/104)) ([13e0b5a](https://github.com/workos/workos-php-laravel/commit/13e0b5af56a45690597440330f7684604857a010))
+* require workos-php v7 ([#103](https://github.com/workos/workos-php-laravel/issues/103)) ([51b8823](https://github.com/workos/workos-php-laravel/commit/51b8823442c0fd0f3c426de987b8034e63b4e158))
+
 ## [7.0.1](https://github.com/workos/workos-php-laravel/compare/v7.0.0...v7.0.1) (2026-06-17)
 
 
