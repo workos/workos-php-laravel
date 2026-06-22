@@ -96,7 +96,7 @@ class WorkOSServiceProviderTest extends LaravelTestCase
         $this->assertInstanceOf(\WorkOS\SessionManager::class, $client->sessionManager());
         $this->assertInstanceOf(\WorkOS\Service\SSO::class, $client->sso());
         $this->assertInstanceOf(\WorkOS\Service\UserManagement::class, $client->userManagement());
-        $this->assertInstanceOf(\WorkOS\Vault::class, $client->vault());
+        $this->assertInstanceOf(\WorkOS\Service\Vault::class, $client->vault());
         $this->assertInstanceOf(\WorkOS\WebhookVerification::class, $client->webhookVerification());
         $this->assertInstanceOf(\WorkOS\Service\Webhooks::class, $client->webhooks());
         $this->assertInstanceOf(\WorkOS\Service\Widgets::class, $client->widgets());
