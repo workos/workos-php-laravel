@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.1](https://github.com/workos/workos-php-laravel/compare/v8.0.0...v8.0.1) (2026-07-08)
+
+
+### Miscellaneous Chores
+
+* scope SDK bot App token permissions ([57fbf8d](https://github.com/workos/workos-php-laravel/commit/57fbf8d40851cd7c94ec0f3e6dc143505bd16d83))
+
 ## [8.0.0](https://github.com/workos/workos-php-laravel/compare/v7.0.1...v8.0.0) (2026-06-22)
 
 
