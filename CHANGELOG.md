@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.2](https://github.com/workos/workos-php-laravel/compare/v8.0.1...v8.0.2) (2026-08-17)
+
+
+### Miscellaneous Chores
+
+* **deps:** update github-actions versions ([#107](https://github.com/workos/workos-php-laravel/issues/107)) ([f680078](https://github.com/workos/workos-php-laravel/commit/f6800783ba08811a12833470b835fa4234286666))
+
 ## [8.0.1](https://github.com/workos/workos-php-laravel/compare/v8.0.0...v8.0.1) (2026-07-08)
 
 
