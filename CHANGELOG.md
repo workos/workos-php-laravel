@@ -1,5 +1,21 @@
 # Changelog
 
+## [9.0.0](https://github.com/workos/workos-php-laravel/compare/v8.0.1...v9.0.0) (2026-11-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* support workos/workos-php ^9.5 ([#109](https://github.com/workos/workos-php-laravel/issues/109))
+
+### Features
+
+* support workos/workos-php ^9.5 ([#109](https://github.com/workos/workos-php-laravel/issues/109)) ([6d7307c](https://github.com/workos/workos-php-laravel/commit/6d7307cb60bd924aed325ac326500f63e2caf4f6))
+
+
+### Miscellaneous Chores
+
+* **deps:** update github-actions versions ([#107](https://github.com/workos/workos-php-laravel/issues/107)) ([f680078](https://github.com/workos/workos-php-laravel/commit/f6800783ba08811a12833470b835fa4234286666))
+
 ## [8.0.1](https://github.com/workos/workos-php-laravel/compare/v8.0.0...v8.0.1) (2026-07-08)
 
 
