@@ -79,19 +79,25 @@ class WorkOSServiceProviderTest extends LaravelTestCase
 
         $this->assertInstanceOf(\WorkOS\Actions::class, $client->actions());
         $this->assertInstanceOf(\WorkOS\Service\AdminPortal::class, $client->adminPortal());
+        $this->assertInstanceOf(\WorkOS\Service\Agents::class, $client->agents());
         $this->assertInstanceOf(\WorkOS\Service\ApiKeys::class, $client->apiKeys());
         $this->assertInstanceOf(\WorkOS\Service\AuditLogs::class, $client->auditLogs());
         $this->assertInstanceOf(\WorkOS\Service\Authorization::class, $client->authorization());
+        $this->assertInstanceOf(\WorkOS\Service\ClientApi::class, $client->clientApi());
         $this->assertInstanceOf(\WorkOS\Service\Connect::class, $client->connect());
         $this->assertInstanceOf(\WorkOS\Service\DirectorySync::class, $client->directorySync());
         $this->assertInstanceOf(\WorkOS\Service\Events::class, $client->events());
         $this->assertInstanceOf(\WorkOS\Service\FeatureFlags::class, $client->featureFlags());
+        $this->assertInstanceOf(\WorkOS\Service\Groups::class, $client->groups());
         $this->assertInstanceOf(\WorkOS\Service\MultiFactorAuth::class, $client->multiFactorAuth());
         $this->assertInstanceOf(\WorkOS\Service\OrganizationDomains::class, $client->organizationDomains());
+        $this->assertInstanceOf(\WorkOS\Service\OrganizationMembershipService::class, $client->organizationMembership());
         $this->assertInstanceOf(\WorkOS\Service\Organizations::class, $client->organizations());
         $this->assertInstanceOf(\WorkOS\Passwordless::class, $client->passwordless());
         $this->assertInstanceOf(\WorkOS\Service\Pipes::class, $client->pipes());
+        $this->assertInstanceOf(\WorkOS\Service\PipesProvider::class, $client->pipesProvider());
         $this->assertInstanceOf(\WorkOS\PKCEHelper::class, $client->pkce());
+        $this->assertInstanceOf(\WorkOS\Service\PlatformTeams::class, $client->platformTeams());
         $this->assertInstanceOf(\WorkOS\Service\Radar::class, $client->radar());
         $this->assertInstanceOf(\WorkOS\SessionManager::class, $client->sessionManager());
         $this->assertInstanceOf(\WorkOS\Service\SSO::class, $client->sso());
