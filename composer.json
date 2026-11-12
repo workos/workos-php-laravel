@@ -16,11 +16,19 @@
       "email": "support@workos.com"
     }
   ],
+  "_comment": "REMOVE BEFORE RELEASE: see release-checklist.md. Applies to the path repository below and to the @dev constraint on workos/workos-php, which was ^9.5.",
+  "repositories": [
+    {
+      "_comment": "REMOVE BEFORE RELEASE: see release-checklist.md",
+      "type": "path",
+      "url": "/Users/gjtorikian/workos/sdks/backend/workos-php"
+    }
+  ],
   "require": {
     "php": ">=8.2.0",
     "illuminate/contracts": "^12.0|^13.0",
     "illuminate/support": "^12.0|^13.0",
-    "workos/workos-php": "^9.5"
+    "workos/workos-php": "@dev"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.64",

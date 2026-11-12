@@ -147,4 +147,87 @@ class WorkOSServiceProviderTest extends LaravelTestCase
         );
         $this->assertStringStartsWith('WorkOS PHP Laravel/', $userAgent);
     }
+
+    public function test_configured_credentials_authenticate_the_client_instead_of_an_api_key()
+    {
+        $forms = [
+            'an instance' => new StubCredentials(),
+            'a closure' => fn () => new StubCredentials(),
+            'a static method' => [StubCredentialsFactory::class, 'makeStatic'],
+            'Class@method' => StubCredentialsFactory::class.'@make',
+            'an invokable class name' => StubCredentialsFactory::class,
+        ];
+
+        foreach ($forms as $form => $configured) {
+            StubCredentials::$resolved = 0;
+            $this->app->forgetInstance('workos');
+            // With and without a configured API key: credentials win either way.
+            $this->setDefaultConfig([
+                'api_key' => $form === 'an instance' ? null : 'pk_test',
+                'credentials' => $configured,
+            ]);
+
+            $client = $this->app->make('workos');
+
+            $httpClient = (new \ReflectionClass($client))->getProperty('httpClient')->getValue($client);
+            $this->assertNull($httpClient->getApiKey(), $form);
+            $this->assertSame('client_test', $httpClient->getClientId(), $form);
+
+            try {
+                $client->organizations()->getOrganization('org_01');
+                $this->fail("Expected the client to resolve the configured credentials ({$form}).");
+            } catch (\LogicException $e) {
+                $this->assertSame('asked the configured credentials', $e->getMessage(), $form);
+            }
+            $this->assertSame(1, StubCredentials::$resolved, $form);
+        }
+
+        // Anything else is a configuration error, not a silent fall back to the key.
+        $this->app->forgetInstance('workos');
+        $this->setDefaultConfig(['credentials' => 'not-credentials']);
+        try {
+            $this->app->make('workos');
+            $this->fail('Expected a RuntimeException for an invalid credentials value.');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('workos.credentials', $e->getMessage());
+        }
+    }
+}
+
+/**
+ * Credentials that fail on resolve, so a test can see the client ask them
+ * for its headers without sending a request.
+ */
+class StubCredentials implements \WorkOS\Credentials
+{
+    public static int $resolved = 0;
+
+    public function resolve(): \WorkOS\CredentialSnapshot
+    {
+        self::$resolved++;
+
+        throw new \LogicException('asked the configured credentials');
+    }
+
+    public function invalidate(int $generation): void
+    {
+    }
+}
+
+class StubCredentialsFactory
+{
+    public static function makeStatic(): StubCredentials
+    {
+        return new StubCredentials();
+    }
+
+    public function make(): StubCredentials
+    {
+        return new StubCredentials();
+    }
+
+    public function __invoke(): StubCredentials
+    {
+        return new StubCredentials();
+    }
 }
