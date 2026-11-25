@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.0.1](https://github.com/workos/workos-php-laravel/compare/v9.0.0...v9.0.1) (2026-11-25)
+
+
+### Miscellaneous Chores
+
+* **deps:** update github-actions versions ([#110](https://github.com/workos/workos-php-laravel/issues/110)) ([37f62f3](https://github.com/workos/workos-php-laravel/commit/37f62f314c240637e0fbe0dae1cfddd345df16f0))
+
 ## [9.0.0](https://github.com/workos/workos-php-laravel/compare/v8.0.1...v9.0.0) (2026-11-03)
 
 
